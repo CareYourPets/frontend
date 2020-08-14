@@ -11,6 +11,4 @@ RUN yarn install
 RUN yarn run build
 RUN yarn global add serve
 
-EXPOSE 3000
-
-ENTRYPOINT serve -s build -p 3000
+CMD serve -n -s build -p $PORT
