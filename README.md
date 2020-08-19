@@ -39,17 +39,16 @@ yarn start
 yarn test
 ```
 
-### Heroku setup
+### Heroku Setup
 
 - Install Heroku
 ```
 https://devcenter.heroku.com/articles/heroku-cli#download-and-install
 ```
 
-- Login using cli
+- Login using cli (Make sure that you have access to the deployed heroku app)
 ```
 heroku login
-(Make sure that you have access to the deployed heroku app)
 ```
 
 ### Deployment
