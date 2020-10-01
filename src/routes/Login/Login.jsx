@@ -12,7 +12,8 @@ import { useState } from 'react';
 import { InputLabel } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import API from '../../api';
+import { login } from '../../utils/auth.service';
+import { PET_OWNER, CARE_TAKER } from '../../utils/roleUtil';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -48,8 +49,8 @@ export default function SignIn() {
   });
 
   const rolesMapping = {
-    'Care Taker': 'CARE_TAKER',
-    'Pet Owner': 'PET_OWNER'
+    'Care Taker': CARE_TAKER,
+    'Pet Owner': PET_OWNER
   };
 
   const handleChangeForm = name => event => {
@@ -58,16 +59,15 @@ export default function SignIn() {
 
   const onSubmit = () => {
     handleUser({ ...user, isFetching: true });
-    return API.post('/user/login', {
-      email: values.email,
-      password: values.password,
-      role: values.role
-    })
+    login(values.email, values.password, values.role)
       .then(() => {
         /** user will be redirected to dashboard, @see Authenticated.js */
         handleUser({ email: values.email, isFetching: false, isAuth: true });
       })
-      .finally(handleUser({ ...user, isFetching: false }));
+      .catch(() => {
+        // show snackbar
+        handleUser({ ...user, isFetching: false, isAuth: false });
+      });
   };
 
   const handleClose = () => {
