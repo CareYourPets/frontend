@@ -14,9 +14,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { login } from '../../utils/auth.service';
+import { createUser } from '../../utils/auth.service';
 import { PET_OWNER, CARE_TAKER } from '../../utils/roleUtil';
-import { SIGN_UP } from '../../constants/routes';
+import { LOGIN } from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -46,6 +46,8 @@ export default function SignIn() {
   const { user, handleUser } = useUser();
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     role: ''
@@ -62,7 +64,13 @@ export default function SignIn() {
 
   const onSubmit = () => {
     handleUser({ ...user, isFetching: true });
-    login(values.email, values.password, values.role)
+    return createUser(
+      values.firstName,
+      values.lastName,
+      values.email,
+      values.password,
+      values.role
+    )
       .then(() => {
         /** user will be redirected to dashboard, @see Authenticated.js */
         handleUser({ ...user, email: values.email, isAuth: true });
@@ -89,9 +97,31 @@ export default function SignIn() {
           <PetsIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Care Your Pets Sign in
+          Care Your Pets Sign Up
         </Typography>
         <form className={classes.form} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="First Name"
+            name="firstName"
+            id="firstName"
+            autoFocus
+            onChange={handleChangeForm('firstName')}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Last Name"
+            name="lastName"
+            id="lastName"
+            autoFocus
+            onChange={handleChangeForm('lastName')}
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -147,12 +177,12 @@ export default function SignIn() {
             className={classes.submit}
             onClick={() => onSubmit()}
           >
-            Sign In
+            Sign Up
           </Button>
           <Grid container>
             <Grid item>
-              <Link href={SIGN_UP} variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href={LOGIN} variant="body2">
+                {'Alread have an account? Sign In'}
               </Link>
             </Grid>
           </Grid>
