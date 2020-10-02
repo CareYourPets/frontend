@@ -14,9 +14,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { createUser } from '../../utils/auth.service';
-import { PET_OWNER, CARE_TAKER } from '../../utils/roleUtil';
-import { LOGIN } from '../../constants/routes';
+import { createUser } from 'utils/auth.service';
+import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
+import { LOGIN } from 'constants/routes';
 
 const useStyles = makeStyles(theme => ({
   paper: {
