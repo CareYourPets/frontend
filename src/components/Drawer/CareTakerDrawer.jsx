@@ -15,13 +15,13 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
-import PetsIcon from '@material-ui/icons/Pets';
+import SearchIcon from '@material-ui/icons/Search';
+import RestoreIcon from '@material-ui/icons/Restore';
 import { useUser } from 'contexts/UserContext';
 import { logout } from 'utils/auth.service';
-import { BIDS, PROFILE, DASHBOARD, PETS } from 'constants/routes';
+import { BIDS, PROFILE, DASHBOARD, WORKING } from 'constants/routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,9 +58,9 @@ const PetOwnerDrawer = ({ children }) => {
       to: PROFILE
     },
     {
-      icon: <PetsIcon />,
-      text: 'Pets',
-      to: PETS
+      icon: <RestoreIcon />,
+      text: 'Working',
+      to: WORKING
     },
     {
       icon: <DescriptionIcon />,
@@ -130,7 +130,7 @@ const PetOwnerDrawer = ({ children }) => {
             <MenuIcon onClick={toggleDrawer(true)} />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            CareYourPets: PetOwner
+            CareYourPets: CareTaker
           </Typography>
           <Button color="inherit" onClick={() => onLogout()}>
             <ExitToAppIcon />

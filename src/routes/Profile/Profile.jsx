@@ -70,7 +70,7 @@ const Profile = () => {
   };
 
   return (
-    <Drawer.PetOwnerDrawer>
+    <Drawer>
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <div className={classes.paper}>
@@ -263,7 +263,7 @@ const Profile = () => {
           </Grid>
         </div>
       </Container>
-    </Drawer.PetOwnerDrawer>
+    </Drawer>
   );
 };
 

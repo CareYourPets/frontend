@@ -9,6 +9,7 @@ export const login = async (email, password, role) => {
       role
     });
     window.localStorage.setItem('accessToken', accessToken);
+    window.localStorage.setItem('role', role);
     toast.success('Login Successful');
     return;
   } catch (error) {
@@ -21,14 +22,20 @@ export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
 };
 
+export const getRole = () => {
+  return localStorage.getItem('role');
+};
+
 export const logout = () => {
   localStorage.removeItem('accessToken');
+  localStorage.removeItem('role');
 };
 
 export const checkAccessToken = async () => {
   try {
     const accessToken = getAccessToken();
-    await API.get('/user/info', {}, accessToken);
+    const data = await API.get('/user/info', {}, accessToken);
+    return data;
   } catch (error) {
     logout();
     throw new Error(error.detail);
@@ -43,6 +50,7 @@ export const createUser = async (email, password, role) => {
       role
     });
     window.localStorage.setItem('accessToken', accessToken);
+    window.localStorage.setItem('role', role);
     return;
   } catch (error) {
     toast.error('Signup Error');

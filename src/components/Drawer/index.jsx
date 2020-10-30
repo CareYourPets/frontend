@@ -1,5 +1,1 @@
-import PetOwnerDrawer from './PetOwnerDrawer';
-
-export default {
-  PetOwnerDrawer: PetOwnerDrawer
-};
+export { default } from './Drawer';
