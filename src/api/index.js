@@ -47,12 +47,13 @@ const putRequest = (url, data) => {
   });
 };
 
-const postRequest = (url, data) => {
+const postRequest = (url, data, accessToken) => {
   return new Promise((resolve, reject) => {
     axios
-      .post(httpUrl + url, data)
+      .post(httpUrl + url, data, { headers: { accessToken } })
       .then(response => {
         resolve(response.data);
+        return response.data;
       })
       .catch(error => {
         reject(error);
