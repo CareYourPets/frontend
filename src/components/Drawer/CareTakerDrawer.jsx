@@ -17,8 +17,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
-import SearchIcon from '@material-ui/icons/Search';
 import RestoreIcon from '@material-ui/icons/Restore';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useUser } from 'contexts/UserContext';
 import { logout } from 'utils/auth.service';
 import { BIDS, PROFILE, DASHBOARD, WORKING } from 'constants/routes';
@@ -48,9 +48,14 @@ const PetOwnerDrawer = ({ children }) => {
 
   const DrawerItems = [
     {
-      icon: <SearchIcon />,
-      text: 'Search',
+      icon: <DashboardIcon />,
+      text: 'Dashboard',
       to: DASHBOARD
+    },
+    {
+      icon: <DescriptionIcon />,
+      text: 'Bid',
+      to: BIDS
     },
     {
       icon: <AccountCircleIcon />,
@@ -61,11 +66,6 @@ const PetOwnerDrawer = ({ children }) => {
       icon: <RestoreIcon />,
       text: 'Working',
       to: WORKING
-    },
-    {
-      icon: <DescriptionIcon />,
-      text: 'Bid',
-      to: BIDS
     }
   ];
 
