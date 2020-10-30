@@ -48,7 +48,7 @@ const SignIn = () => {
   const [values, setValues] = useState({
     email: '',
     password: '',
-    role: ''
+    role: PET_OWNER
   });
 
   const rolesMapping = {
@@ -120,7 +120,7 @@ const SignIn = () => {
             variant="outlined"
             labelId="roleLabel"
             id="controlled-open-select"
-            defaultValue=""
+            defaultValue={PET_OWNER}
             open={open}
             onClose={handleClose}
             onOpen={handleOpen}

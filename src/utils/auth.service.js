@@ -29,10 +29,8 @@ export const checkAccessToken = async () => {
   try {
     const accessToken = getAccessToken();
     await API.get('/user/info', {}, accessToken);
-    toast.success('Login Successful');
   } catch (error) {
     logout();
-    toast.error('Login Error');
     throw new Error(error.detail);
   }
 };
