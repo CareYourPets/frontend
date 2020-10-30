@@ -35,17 +35,9 @@ export const checkAccessToken = async () => {
   }
 };
 
-export const createUser = async (
-  firstName,
-  lastName,
-  email,
-  password,
-  role
-) => {
+export const createUser = async (email, password, role) => {
   try {
     const { accessToken } = await API.post('/user/create', {
-      firstName,
-      lastName,
       email,
       password,
       role
@@ -53,6 +45,7 @@ export const createUser = async (
     window.localStorage.setItem('accessToken', accessToken);
     return;
   } catch (error) {
+    toast.error('Signup Error');
     throw new Error(error.detail);
   }
 };

@@ -56,6 +56,7 @@ const Profile = () => {
   };
   React.useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line
   }, []);
 
   const updateProfile = async () => {
