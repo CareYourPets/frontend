@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,6 +20,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import { useUser } from 'contexts/UserContext';
 import { logout } from 'utils/auth.service';
+import { BIDS, PROFILE, DASHBOARD } from 'constants/routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,15 +48,18 @@ const Dashboard = ({ children }) => {
   const DrawerItems = [
     {
       icon: <SearchIcon />,
-      text: 'Search'
+      text: 'Search',
+      to: DASHBOARD
     },
     {
       icon: <AccountCircleIcon />,
-      text: 'Profile'
+      text: 'Profile',
+      to: PROFILE
     },
     {
       icon: <DescriptionIcon />,
-      text: 'Bid'
+      text: 'Bid',
+      to: BIDS
     }
   ];
 
@@ -81,10 +87,15 @@ const Dashboard = ({ children }) => {
     >
       <List>
         {DrawerItems.map(item => (
-          <ListItem button key={item.text}>
+          <MenuItem
+            key={item.text}
+            component={Link}
+            to={item.to}
+            style={{ textDecoration: 'none' }}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
-          </ListItem>
+          </MenuItem>
         ))}
       </List>
       <Divider />
