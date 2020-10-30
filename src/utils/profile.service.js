@@ -28,3 +28,19 @@ export const updatePetOwnerInfo = async profileInfo => {
     throw new Error(error.detail);
   }
 };
+
+export const updateCareTakerInfo = async profileInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post(
+      '/user/update/caretaker',
+      profileInfo,
+      accessToken
+    );
+    toast.success('Update Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};

@@ -13,7 +13,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import { GENDERS, AREAS } from 'constants/variables';
-import { updatePetOwnerInfo } from 'utils/profile.service';
+import { updatePetOwnerInfo, updateCareTakerInfo } from 'utils/profile.service';
+import { getRole } from 'utils/auth.service';
+import { CARE_TAKER, PET_OWNER } from 'utils/roleUtil';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,6 +37,8 @@ const useStyles = makeStyles(theme => ({
 
 const Profile = () => {
   const classes = useStyles();
+  const role = getRole();
+
   const [profileInfo, setProfileInfo] = React.useState({
     area: '',
     bio: '',
@@ -61,7 +65,11 @@ const Profile = () => {
 
   const updateProfile = async () => {
     try {
-      await updatePetOwnerInfo(profileInfo);
+      if (role === PET_OWNER) {
+        await updatePetOwnerInfo(profileInfo);
+      } else if (role === CARE_TAKER) {
+        await updateCareTakerInfo(profileInfo);
+      }
       await fetchProfile();
       setIsEdit(false);
     } catch {
@@ -257,6 +265,31 @@ const Profile = () => {
               ) : (
                 <Typography component="p" variant="h6">
                   {profileInfo.location}
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
+          <Grid container className={classes.spacer}>
+            <Grid item xs={3}>
+              <Typography component="p" variant="h6">
+                Contact
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              {isEdit ? (
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                  defaultValue={profileInfo.contact}
+                  fullWidth
+                  onChange={e =>
+                    setProfileInfo({ ...profileInfo, contact: e.target.value })
+                  }
+                />
+              ) : (
+                <Typography component="p" variant="h6">
+                  {profileInfo.contact}
                 </Typography>
               )}
             </Grid>
