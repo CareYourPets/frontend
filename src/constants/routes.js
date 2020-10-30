@@ -9,3 +9,5 @@ export const ROOT = '/';
 export const BIDS = '/bids';
 
 export const PROFILE = '/profile';
+
+export const PETS = '/pets';

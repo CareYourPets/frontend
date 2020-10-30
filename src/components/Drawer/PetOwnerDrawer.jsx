@@ -18,9 +18,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
+import PetsIcon from '@material-ui/icons/Pets';
 import { useUser } from 'contexts/UserContext';
 import { logout } from 'utils/auth.service';
-import { BIDS, PROFILE, DASHBOARD } from 'constants/routes';
+import { BIDS, PROFILE, DASHBOARD, PETS } from 'constants/routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,6 +56,11 @@ const Dashboard = ({ children }) => {
       icon: <AccountCircleIcon />,
       text: 'Profile',
       to: PROFILE
+    },
+    {
+      icon: <PetsIcon />,
+      text: 'Pets',
+      to: PETS
     },
     {
       icon: <DescriptionIcon />,
