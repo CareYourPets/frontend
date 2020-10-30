@@ -8,10 +8,10 @@ const httpUrl =
 /** Commented below out because it causes Access control origin errors */
 // axios.defaults.withCredentials = true;
 
-const getRequest = (url, data) => {
+const getRequest = (url, data, accessToken = null) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(httpUrl + url, { params: data || {} })
+      .get(httpUrl + url, { params: data || {}, headers: { accessToken } })
       .then(response => {
         resolve(response.data);
       })
