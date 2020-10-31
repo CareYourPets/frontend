@@ -297,7 +297,7 @@ const Profile = () => {
             </Grid>
           </Grid>
         </div>
-        <CareTakerSkills />
+        {role === CARE_TAKER ? <CareTakerSkills /> : <div />}
       </Container>
     </Drawer>
   );
