@@ -35,12 +35,12 @@ const CareTakerProfile = ({ name, area, location, bio }) => {
         <Avatar round={true} className={classes.large} name={name} />
       </Grid>
       <Grid container justify="center" className={classes.spacer}>
-        <Typography component="p" variant="h4">
+        <Typography component="h1" variant="h7">
           {name === null ? 'Anonymous' : name}
         </Typography>
       </Grid>
       <Grid container justify="center" className={classes.spacer}>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h7">
           Bio
         </Typography>
       </Grid>
@@ -52,7 +52,7 @@ const CareTakerProfile = ({ name, area, location, bio }) => {
         </Typography>
       </Grid>
       <Grid container justify="center" className={classes.spacer}>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h7">
           Location
         </Typography>
       </Grid>

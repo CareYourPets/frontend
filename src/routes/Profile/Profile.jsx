@@ -14,8 +14,8 @@ import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import { GENDERS, AREAS } from 'constants/variables';
 import { updatePetOwnerInfo, updateCareTakerInfo } from 'utils/profile.service';
-import { getRole } from 'utils/auth.service';
 import { CARE_TAKER, PET_OWNER } from 'utils/roleUtil';
+import { useUser } from 'contexts/UserContext';
 import CareTakerSkills from './CareTakerSkills';
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +39,9 @@ const useStyles = makeStyles(theme => ({
 
 const Profile = () => {
   const classes = useStyles();
-  const role = getRole();
+  const {
+    user: { role }
+  } = useUser();
 
   const [profileInfo, setProfileInfo] = React.useState({
     area: '',

@@ -8,6 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Slider from 'react-slick';
 import TouchAppIcon from '@material-ui/icons/TouchApp';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import CareTakerProfile from './CareTakerProfile';
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +28,6 @@ const useStyles = makeStyles(theme => ({
 
 const Search = () => {
   const classes = useStyles();
-  const isByLocation = false;
   const settings = {
     dots: false,
     infinite: true,
@@ -33,6 +36,7 @@ const Search = () => {
     slidesToScroll: 1,
     autoplay: true
   };
+  const [isByLocation, setIsByLocation] = React.useState(false);
 
   const [careTakers, setCareTakers] = React.useState([]);
 
@@ -44,9 +48,11 @@ const Search = () => {
       setCareTakers(careTakers);
     }
   };
+
   React.useEffect(() => {
     searchCareTakers();
-  }, []);
+    // eslint-disable-next-line
+  }, [isByLocation]);
 
   return (
     <Drawer>
@@ -54,8 +60,31 @@ const Search = () => {
         <CssBaseline />
         <div className={classes.paper}>
           <Grid container justify="center" className={classes.spacer}>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h7">
               Swipe To Find Your CareTaker <TouchAppIcon />
+            </Typography>
+          </Grid>
+          <Grid container justify="center" className={classes.spacer}>
+            <Typography component="h1" variant="h6">
+              {careTakers.length} Results
+            </Typography>
+          </Grid>
+          <Grid container justify="center" className={classes.spacer}>
+            <Typography component="h1" variant="h6">
+              <FormControl component="fieldset" className={classes.formControl}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isByLocation}
+                        onChange={() => setIsByLocation(!isByLocation)}
+                        name="isByLocation"
+                      />
+                    }
+                    label="Check for care takers near you"
+                  />
+                </FormGroup>
+              </FormControl>
             </Typography>
           </Grid>
           <Slider {...settings}>
