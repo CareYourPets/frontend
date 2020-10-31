@@ -41,14 +41,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn() {
+const SignIn = () => {
   const classes = useStyles();
   const { user, handleUser } = useUser();
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
     email: '',
     password: '',
-    role: ''
+    role: PET_OWNER
   });
 
   const rolesMapping = {
@@ -60,17 +60,14 @@ export default function SignIn() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     handleUser({ ...user, isFetching: true });
-    login(values.email, values.password, values.role)
-      .then(() => {
-        /** user will be redirected to dashboard, @see Authenticated.js */
-        handleUser({ ...user, email: values.email, isAuth: true });
-      })
-      .catch(() => {
-        // show snackbar
-        handleUser({ ...user, isAuth: false });
-      });
+    try {
+      await login(values.email, values.password, values.role);
+      handleUser({ ...user, isAuth: true, isFetching: false });
+    } catch {
+      handleUser({ ...user, isAuth: false, isFetching: false });
+    }
   };
 
   const handleClose = () => {
@@ -123,7 +120,7 @@ export default function SignIn() {
             variant="outlined"
             labelId="roleLabel"
             id="controlled-open-select"
-            defaultValue=""
+            defaultValue={PET_OWNER}
             open={open}
             onClose={handleClose}
             onOpen={handleOpen}
@@ -160,4 +157,6 @@ export default function SignIn() {
       </div>
     </Container>
   );
-}
+};
+
+export default SignIn;

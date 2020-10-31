@@ -41,16 +41,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn() {
+const SignIn = () => {
   const classes = useStyles();
   const { user, handleUser } = useUser();
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
     password: '',
-    role: ''
+    role: PET_OWNER
   });
 
   const rolesMapping = {
@@ -62,23 +60,14 @@ export default function SignIn() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     handleUser({ ...user, isFetching: true });
-    return createUser(
-      values.firstName,
-      values.lastName,
-      values.email,
-      values.password,
-      values.role
-    )
-      .then(() => {
-        /** user will be redirected to dashboard, @see Authenticated.js */
-        handleUser({ ...user, email: values.email, isAuth: true });
-      })
-      .catch(() => {
-        // show snackbar
-        handleUser({ ...user, isAuth: false });
-      });
+    try {
+      await createUser(values.email, values.password, values.role);
+      handleUser({ ...user, isAuth: true, isFetching: false });
+    } catch {
+      handleUser({ ...user, isAuth: false, isFetching: false });
+    }
   };
 
   const handleClose = () => {
@@ -100,28 +89,6 @@ export default function SignIn() {
           Care Your Pets Sign Up
         </Typography>
         <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="First Name"
-            name="firstName"
-            id="firstName"
-            autoFocus
-            onChange={handleChangeForm('firstName')}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="Last Name"
-            name="lastName"
-            id="lastName"
-            autoFocus
-            onChange={handleChangeForm('lastName')}
-          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -153,7 +120,7 @@ export default function SignIn() {
             variant="outlined"
             labelId="roleLabel"
             id="controlled-open-select"
-            defaultValue=""
+            defaultValue={PET_OWNER}
             open={open}
             onClose={handleClose}
             onOpen={handleOpen}
@@ -190,4 +157,6 @@ export default function SignIn() {
       </div>
     </Container>
   );
-}
+};
+
+export default SignIn;

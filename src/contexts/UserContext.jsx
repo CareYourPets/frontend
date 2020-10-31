@@ -1,7 +1,9 @@
 import React from 'react';
+import { checkAccessToken } from 'utils/auth.service';
 
 const defaultProps = {
   email: '',
+  role: '',
   isAuth: false,
   isFetching: true
 };
@@ -16,13 +18,18 @@ const UserContext = React.createContext(defaultContextProps);
 const UserProvider = props => {
   const [user, handleUser] = React.useState(defaultProps);
 
+  const checkUserAuth = async () => {
+    handleUser({ ...user, isFetching: true });
+    try {
+      await checkAccessToken();
+      handleUser({ ...user, isAuth: true, isFetching: false });
+    } catch {
+      handleUser({ ...user, isAuth: false, isFetching: false });
+    }
+  };
+
   React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      handleUser({ ...user, isFetching: false });
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
+    checkUserAuth();
     // eslint-disable-next-line
   }, []);
 
