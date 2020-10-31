@@ -16,12 +16,14 @@ import { GENDERS, AREAS } from 'constants/variables';
 import { updatePetOwnerInfo, updateCareTakerInfo } from 'utils/profile.service';
 import { getRole } from 'utils/auth.service';
 import { CARE_TAKER, PET_OWNER } from 'utils/roleUtil';
+import CareTakerSkills from './CareTakerSkills';
 
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(10),
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginBottom: theme.spacing(10)
   },
   spacer: {
     marginTop: theme.spacing(5)
@@ -103,7 +105,7 @@ const Profile = () => {
                   <Button
                     type="button"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     onClick={() => setIsEdit(true)}
                   >
                     Edit
@@ -134,7 +136,7 @@ const Profile = () => {
               {isEdit ? (
                 <TextField
                   id="outlined-basic"
-                  label="Outlined"
+                  label="Name"
                   variant="outlined"
                   defaultValue={profileInfo.name}
                   fullWidth
@@ -159,7 +161,7 @@ const Profile = () => {
               {isEdit ? (
                 <TextField
                   id="outlined-basic"
-                  label="Outlined"
+                  label="Bio"
                   variant="outlined"
                   defaultValue={profileInfo.bio}
                   fullWidth
@@ -254,7 +256,7 @@ const Profile = () => {
               {isEdit ? (
                 <TextField
                   id="outlined-basic"
-                  label="Outlined"
+                  label="Location"
                   variant="outlined"
                   defaultValue={profileInfo.location}
                   fullWidth
@@ -279,7 +281,7 @@ const Profile = () => {
               {isEdit ? (
                 <TextField
                   id="outlined-basic"
-                  label="Outlined"
+                  label="Contact"
                   variant="outlined"
                   defaultValue={profileInfo.contact}
                   fullWidth
@@ -295,6 +297,7 @@ const Profile = () => {
             </Grid>
           </Grid>
         </div>
+        <CareTakerSkills />
       </Container>
     </Drawer>
   );
