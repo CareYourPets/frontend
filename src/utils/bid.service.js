@@ -28,3 +28,37 @@ export const createBid = async bidInfo => {
     throw new Error(error.detail);
   }
 };
+
+export const fetchBids = async () => {
+  try {
+    const accessToken = getAccessToken();
+    const { response: data } = await API.get('/bid/info', {}, accessToken);
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};
+
+export const updateBid = async bidInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post('/bid/update', bidInfo, accessToken);
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};
+
+export const deleteBid = async bidInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post('/bid/delete', bidInfo, accessToken);
+    toast.success('Deleted Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};

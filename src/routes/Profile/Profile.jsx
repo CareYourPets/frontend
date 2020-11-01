@@ -203,7 +203,11 @@ const Profile = () => {
             </Grid>
             <Grid item xs={9}>
               {isEdit ? (
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  fullWidth
+                  className={classes.formControl}
+                >
                   <InputLabel id="demo-simple-select-outlined-label">
                     Gender
                   </InputLabel>
@@ -238,7 +242,11 @@ const Profile = () => {
             </Grid>
             <Grid item xs={9}>
               {isEdit ? (
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  fullWidth
+                  className={classes.formControl}
+                >
                   <InputLabel id="demo-simple-select-outlined-label">
                     Area
                   </InputLabel>
