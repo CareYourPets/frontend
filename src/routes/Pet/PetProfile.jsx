@@ -197,6 +197,7 @@ const PetProfile = ({
                   <FormControl
                     variant="outlined"
                     className={classes.formControl}
+                    fullWidth
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
                       Category
