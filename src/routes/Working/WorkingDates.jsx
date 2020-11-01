@@ -2,7 +2,13 @@ import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import ReactTooltip from 'react-tooltip';
 import moment from 'moment';
-import { fetchAvailabilityInfo } from 'utils/work.service';
+import {
+  fetchAvailabilityInfo,
+  createAvailabilityInfo,
+  deleteAvailabilityInfo
+} from 'utils/work.service';
+import { toast } from 'react-toastify';
+import { CARE_TAKER_PART_TIMER, CARE_TAKER_FULL_TIMER } from 'utils/roleUtil';
 
 function shiftDate(date, numDays) {
   const newDate = new Date(date);
@@ -14,7 +20,7 @@ function getRange(count) {
   return Array.from({ length: count }, (_, i) => i);
 }
 
-const WorkingDates = ({ type }) => {
+const FullTimeWorkingDates = ({ type }) => {
   const today = new Date();
   const [heatmap, setHeatMap] = React.useState({});
 
@@ -53,6 +59,28 @@ const WorkingDates = ({ type }) => {
     count: heatmap[item]
   }));
 
+  const handleDate = async ({ date, count }) => {
+    try {
+      if (count === 0) {
+        await createAvailabilityInfo({
+          date: moment(date).format('YYYY/MM/DD'),
+          type
+        });
+        await fetchDates();
+      } else if (count === -1) {
+        await deleteAvailabilityInfo({
+          date: moment(date).format('YYYY/MM/DD'),
+          type
+        });
+        await fetchDates();
+      } else {
+        toast.error('Cannot apply leave');
+      }
+    } catch {
+      return;
+    }
+  };
+
   return (
     <div>
       <CalendarHeatmap
@@ -75,17 +103,121 @@ const WorkingDates = ({ type }) => {
             };
           }
           return {
-            'data-tip': `${moment(value.date).format('YYYY/MM/DD')}: ${
-              value.count
-            } Jobs`
+            'data-tip': `${moment(value.date).format('YYYY/MM/DD')}: NA`
           };
         }}
         showWeekdayLabels={true}
-        // onClick={value => alert(`Clicked on value with count: ${value.count}`)}
+        onClick={value => handleDate(value)}
       />
       <ReactTooltip />
     </div>
   );
+};
+
+const PartTimeWorkingDates = ({ type }) => {
+  const today = new Date();
+  const [heatmap, setHeatMap] = React.useState({});
+
+  const fetchDates = async () => {
+    const data = await fetchAvailabilityInfo({ type });
+    const reducedData = data.reduce((prev, item) => {
+      const { date } = item;
+      const formatedDate = moment(date).format('"YYYY/MM/DD"');
+      return { ...prev, [formatedDate]: 0 };
+    }, {});
+
+    const dates = getRange(366).map(index => {
+      const date = shiftDate(today, index);
+      const formatedDate = moment(date).format('"YYYY/MM/DD"');
+      return {
+        date,
+        count: formatedDate in reducedData ? 0 : -1
+      };
+    });
+    const reducedDates = dates.reduce((prev, date) => {
+      return { ...prev, [date.date]: date.count };
+    }, {});
+    setHeatMap(reducedDates);
+  };
+  React.useEffect(() => {
+    fetchDates();
+    // eslint-disable-next-line
+  }, []);
+
+  if (heatmap === {}) {
+    return <div />;
+  }
+
+  const values = Object.keys(heatmap).map(item => ({
+    date: item,
+    count: heatmap[item]
+  }));
+
+  const handleDate = async ({ date, count }) => {
+    try {
+      if (count === -1) {
+        await createAvailabilityInfo({
+          date: moment(date).format('YYYY/MM/DD'),
+          type
+        });
+        await fetchDates();
+      } else if (count === 0) {
+        await deleteAvailabilityInfo({
+          date: moment(date).format('YYYY/MM/DD'),
+          type
+        });
+        await fetchDates();
+      } else {
+        toast.error('Cannot apply leave');
+      }
+    } catch {
+      return;
+    }
+  };
+
+  return (
+    <div>
+      <CalendarHeatmap
+        startDate={today}
+        endDate={shiftDate(today, 365)}
+        values={values}
+        classForValue={value => {
+          if (!value) {
+            return 'color-empty';
+          }
+          if (value.count < 0) {
+            return 'color-github-0';
+          }
+          return `color-github-3`;
+        }}
+        tooltipDataAttrs={value => {
+          if (value.count === 0) {
+            return {
+              'data-tip': `${moment(value.date).format(
+                'YYYY/MM/DD'
+              )}: Available`
+            };
+          }
+          return {
+            'data-tip': `${moment(value.date).format('YYYY/MM/DD')}: NA`
+          };
+        }}
+        showWeekdayLabels={true}
+        onClick={value => handleDate(value)}
+      />
+      <ReactTooltip />
+    </div>
+  );
+};
+
+const WorkingDates = ({ type }) => {
+  if (type === CARE_TAKER_FULL_TIMER) {
+    return <FullTimeWorkingDates type={type} />;
+  } else if (type === CARE_TAKER_PART_TIMER) {
+    return <PartTimeWorkingDates type={type} />;
+  } else {
+    return <div />;
+  }
 };
 
 export default WorkingDates;

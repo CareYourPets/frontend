@@ -59,3 +59,35 @@ export const fetchAvailabilityInfo = async payload => {
     throw new Error(error.detail);
   }
 };
+
+export const createAvailabilityInfo = async payload => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post(
+      '/user/caretaker/availability/create',
+      payload,
+      accessToken
+    );
+    toast.success('Created Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};
+
+export const deleteAvailabilityInfo = async payload => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post(
+      '/user/caretaker/availability/delete',
+      payload,
+      accessToken
+    );
+    toast.success('Deleted Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};

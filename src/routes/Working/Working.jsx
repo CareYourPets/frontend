@@ -136,6 +136,11 @@ const Working = () => {
                   Delete
                 </Button>
               </Grid>
+              <Grid container justify="center" className={classes.spacer}>
+                <Typography component="h1" variant="h7">
+                  Click to apply or cancel date
+                </Typography>
+              </Grid>
               <Grid container className={classes.spacer}>
                 <Grid item xs={12}>
                   <WorkingDates type={type} />
