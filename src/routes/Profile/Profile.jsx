@@ -21,13 +21,13 @@ import CareTakerSkills from './CareTakerSkills';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: theme.spacing(10)
+    marginBottom: theme.spacing(2)
   },
   spacer: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(2)
   },
   formControl: {
     margin: theme.spacing(1),

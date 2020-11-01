@@ -1,6 +1,7 @@
 import React from 'react';
 import Drawer from 'components/Drawer';
 import { fetchCareTakers } from 'utils/bid.service';
+import { fetchPets } from 'utils/pet.service';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -16,13 +17,12 @@ import CareTakerProfile from './CareTakerProfile';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
     display: 'flex',
-    flexDirection: 'column',
-    marginBottom: theme.spacing(10)
+    flexDirection: 'column'
   },
   spacer: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -37,8 +37,8 @@ const Search = () => {
     autoplay: true
   };
   const [isByLocation, setIsByLocation] = React.useState(false);
-
   const [careTakers, setCareTakers] = React.useState([]);
+  const [pets, setPets] = React.useState([]);
 
   const searchCareTakers = async () => {
     try {
@@ -49,10 +49,29 @@ const Search = () => {
     }
   };
 
+  const fetchPetOwnerPets = async () => {
+    try {
+      const data = await fetchPets();
+      const names = [];
+      data.forEach((item, _) => {
+        names.push(item.name);
+        return;
+      });
+      setPets(names);
+    } catch {
+      setPets(pets);
+    }
+  };
+
   React.useEffect(() => {
     searchCareTakers();
     // eslint-disable-next-line
   }, [isByLocation]);
+
+  React.useEffect(() => {
+    fetchPetOwnerPets();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Drawer>
@@ -89,7 +108,7 @@ const Search = () => {
           </Grid>
           <Slider {...settings}>
             {careTakers.map((careTaker, i) => (
-              <CareTakerProfile key={i} {...careTaker} />
+              <CareTakerProfile key={i} {...careTaker} pets={pets} />
             ))}
           </Slider>
         </div>

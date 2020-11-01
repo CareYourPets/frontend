@@ -20,10 +20,10 @@ import { updatePetInfo, deletePetInfo } from 'utils/pet.service';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(2)
   },
   spacer: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(2)
   },
   heading: {
     flexBasis: '33.33%',

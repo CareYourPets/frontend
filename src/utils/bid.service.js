@@ -16,3 +16,15 @@ export const fetchCareTakers = async filters => {
     throw new Error(error.detail);
   }
 };
+
+export const createBid = async bidInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post('/bid/create', bidInfo, accessToken);
+    toast.success('Create Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};
