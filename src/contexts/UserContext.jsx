@@ -21,8 +21,8 @@ const UserProvider = props => {
   const checkUserAuth = async () => {
     handleUser({ ...user, isFetching: true });
     try {
-      await checkAccessToken();
-      handleUser({ ...user, isAuth: true, isFetching: false });
+      const { email, role } = await checkAccessToken();
+      handleUser({ email, role, isAuth: true, isFetching: false });
     } catch {
       handleUser({ ...user, isAuth: false, isFetching: false });
     }

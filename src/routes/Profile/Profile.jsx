@@ -13,20 +13,21 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import { GENDERS, AREAS } from 'constants/variables';
+import { deleteUser } from 'utils/auth.service';
 import { updatePetOwnerInfo, updateCareTakerInfo } from 'utils/profile.service';
-import { getRole } from 'utils/auth.service';
 import { CARE_TAKER, PET_OWNER } from 'utils/roleUtil';
+import { useUser } from 'contexts/UserContext';
 import CareTakerSkills from './CareTakerSkills';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: theme.spacing(10)
+    marginBottom: theme.spacing(2)
   },
   spacer: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(2)
   },
   formControl: {
     margin: theme.spacing(1),
@@ -39,7 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 const Profile = () => {
   const classes = useStyles();
-  const role = getRole();
+  const { user, handleUser } = useUser();
+  const { role } = user;
 
   const [profileInfo, setProfileInfo] = React.useState({
     area: '',
@@ -79,6 +81,15 @@ const Profile = () => {
     }
   };
 
+  const deleteProfile = async () => {
+    try {
+      await deleteUser();
+      handleUser({ ...user, isAuth: false });
+    } catch {
+      setIsEdit(false);
+    }
+  };
+
   return (
     <Drawer>
       <Container component="main" maxWidth="md">
@@ -86,7 +97,7 @@ const Profile = () => {
         <div className={classes.paper}>
           <Grid container className={classes.spacer}>
             <Grid item xs={3}>
-              <Typography component="h1" variant="h5">
+              <Typography component="h1" variant="h7">
                 Profile
               </Typography>
             </Grid>
@@ -111,6 +122,14 @@ const Profile = () => {
                     Edit
                   </Button>
                 )}
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="defauolt"
+                  onClick={deleteProfile}
+                >
+                  Delete
+                </Button>
               </Grid>
             </Grid>
           </Grid>
@@ -297,7 +316,7 @@ const Profile = () => {
             </Grid>
           </Grid>
         </div>
-        <CareTakerSkills />
+        {role === CARE_TAKER ? <CareTakerSkills /> : <div />}
       </Container>
     </Drawer>
   );

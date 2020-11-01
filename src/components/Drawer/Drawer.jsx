@@ -1,12 +1,13 @@
 import React from 'react';
-import { getRole } from 'utils/auth.service';
 import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
+import { useUser } from 'contexts/UserContext';
 import PetOwnerDrawer from './PetOwnerDrawer';
 import CareTakerDrawer from './CareTakerDrawer';
 
 const Drawer = ({ children }) => {
-  const role = getRole();
-
+  const {
+    user: { role }
+  } = useUser();
   if (role === PET_OWNER) {
     return <PetOwnerDrawer>{children}</PetOwnerDrawer>;
   } else if (role === CARE_TAKER) {
