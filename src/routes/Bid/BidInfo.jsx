@@ -22,6 +22,8 @@ import { updateBid, deleteBid } from 'utils/bid.service';
 import { useUser } from 'contexts/UserContext';
 import moment from 'moment';
 import { MOMENT_TIME_FORMAT } from 'constants/time';
+import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -48,7 +50,7 @@ const BidInfo = ({
   is_accepted,
   payment_mode,
   pet_name,
-  pet_owner,
+  pet_owner_email,
   review,
   review_date,
   start_date,
@@ -64,7 +66,6 @@ const BidInfo = ({
     'TRANSFER_THROUGH_PCS'
   ];
   const paymentMode = ['CASH', 'CREDIT'];
-
   const [expanded, setExpanded] = React.useState(false);
   const [bidInfo, setBidInfo] = React.useState({
     amount,
@@ -73,7 +74,7 @@ const BidInfo = ({
     isAccepted: is_accepted,
     paymentMode: payment_mode,
     petName: pet_name,
-    petOwner: pet_owner,
+    petOwnerEmail: pet_owner_email,
     review,
     reviewDate: review_date,
     startDate: start_date,
@@ -90,7 +91,6 @@ const BidInfo = ({
     try {
       await updateBid({
         ...bidInfo,
-        petOwnerEmail: user.email,
         reviewDate:
           bidInfo.review === null
             ? null
@@ -112,6 +112,20 @@ const BidInfo = ({
       await deleteBid({ ...bidInfo, petOwnerEmail: user.email });
       setIsEdit(false);
       await fetchAllBids();
+    } catch {
+      setIsEdit(true);
+    }
+  };
+
+  const acceptBid = async () => {
+    try {
+      await updateBid({
+        ...bidInfo,
+        isAccepted: true,
+        transactionDate: moment(Date.now()).format(MOMENT_TIME_FORMAT)
+      });
+      await fetchAllBids();
+      setIsEdit(false);
     } catch {
       setIsEdit(true);
     }
@@ -159,35 +173,59 @@ const BidInfo = ({
         </AccordionSummary>
         <AccordionDetails>
           <Grid container>
-            <Grid container justify="flex-end">
-              {isEdit === true ? (
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  onClick={saveBid}
-                >
-                  <SaveIcon />
-                </Button>
+            {user.role === PET_OWNER ? (
+              bidInfo.isAccepted ? (
+                <div />
               ) : (
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="secondary"
-                  onClick={editBid}
-                >
-                  <EditIcon />
-                </Button>
-              )}
-              <Button
-                type="button"
-                variant="contained"
-                color="default"
-                onClick={cancelBid}
-              >
-                <DeleteIcon />
-              </Button>
-            </Grid>
+                <Grid container justify="flex-end">
+                  {isEdit === true ? (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      onClick={saveBid}
+                    >
+                      <SaveIcon />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="secondary"
+                      onClick={editBid}
+                    >
+                      <EditIcon />
+                    </Button>
+                  )}
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="default"
+                    onClick={cancelBid}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </Grid>
+              )
+            ) : user.role === CARE_TAKER ? (
+              <Grid container justify="flex-end">
+                {bidInfo.isAccepted ? (
+                  <div />
+                ) : (
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={acceptBid}
+                  >
+                    <CheckIcon />
+                  </Button>
+                )}
+              </Grid>
+            ) : (
+              <div />
+            )}
+
             <Grid container className={classes.spacer}>
               <Grid item xs={3}>
                 <Typography component="p" variant="h6">
