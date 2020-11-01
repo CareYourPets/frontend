@@ -202,7 +202,7 @@ const Pets = () => {
         <Grid item xs={9}>
           <TextField
             id="outlined-basic"
-            label="Diet"
+            label="Needs"
             variant="outlined"
             defaultValue={newPet.needs}
             fullWidth

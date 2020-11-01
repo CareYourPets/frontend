@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     backgroundColor: 'rgba(0,0,0,0.1)',
     borderRadius: '5px',
-    minHeight: '500px'
+    minHeight: '500px',
+    padding: theme.spacing(2)
   },
   spacer: {
     marginTop: theme.spacing(2),
@@ -38,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2, 4, 3),
     outline: 'None'
+  },
+  createBid: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -52,8 +56,16 @@ function getModalStyle() {
   };
 }
 
-// email, gender, contact
-const CareTakerProfile = ({ email, name, area, location, bio, pets }) => {
+const CareTakerProfile = ({
+  email,
+  gender,
+  contact,
+  name,
+  area,
+  location,
+  bio,
+  pets
+}) => {
   const classes = useStyles();
   const { user } = useUser();
   const [modalStyle] = React.useState(getModalStyle);
@@ -182,7 +194,7 @@ const CareTakerProfile = ({ email, name, area, location, bio, pets }) => {
       >
         {body}
       </Modal>
-      <Grid container justify="center" className={classes.spacer}>
+      <Grid container justify="flex-end" className={classes.createBid}>
         <Button
           type="button"
           variant="contained"
@@ -192,43 +204,100 @@ const CareTakerProfile = ({ email, name, area, location, bio, pets }) => {
           Bid
         </Button>
       </Grid>
-      <Grid container justify="center" className={classes.spacer}>
-        <Avatar round={true} className={classes.large} name={name} />
+      <Grid container>
+        <Grid item xs={3}>
+          <Grid container justify="center" className={classes.spacer}>
+            <Avatar round={true} className={classes.large} name={name} />
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Grid container justify="center" className={classes.spacer}>
+            <Typography component="h1" variant="h5">
+              {name === null ? 'Anonymous' : name}
+            </Typography>
+          </Grid>
+          <Grid container justify="center" className={classes.spacer}>
+            <Typography component="h1" variant="h5">
+              {email === null ? 'Anonymous' : email}
+            </Typography>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid container justify="center" className={classes.spacer}>
-        <Typography component="h1" variant="h7">
-          {name === null ? 'Anonymous' : name}
-        </Typography>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Bio
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {bio === null
+              ? 'This user likes to keep an air of mystery around him.'
+              : bio}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid container justify="center" className={classes.spacer}>
-        <Typography component="h1" variant="h7">
-          Bio
-        </Typography>
+
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Gender
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {gender === null ? 'NA' : gender}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid container justify="center" className={classes.spacer}>
-        <Typography component="p" variant="h6">
-          {bio === null
-            ? 'This user likes to keep an air of mystery around him.'
-            : bio}
-        </Typography>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Contact
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {contact === null ? 'NA' : contact}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid container justify="center" className={classes.spacer}>
-        <Typography component="h1" variant="h7">
-          Location
-        </Typography>
+
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Area
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {area === null ? 'NA' : area}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid container justify="center" className={classes.spacer}>
-        <Typography component="p" variant="h6">
-          {area === null && location === null
-            ? 'Not specified'
-            : area === null
-            ? `${location}`
-            : location === null
-            ? `${area}`
-            : `${area}: ${location}`}
-        </Typography>
+
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Location
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {location === null ? 'NA' : location}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid container className={classes.spacer}></Grid>
     </div>
   );
 };

@@ -44,6 +44,7 @@ export const updateBid = async bidInfo => {
   try {
     const accessToken = getAccessToken();
     const data = await API.post('/bid/update', bidInfo, accessToken);
+    toast.success('Updated Successfully');
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');
