@@ -88,7 +88,7 @@ const Profile = () => {
         <div className={classes.paper}>
           <Grid container className={classes.spacer}>
             <Grid item xs={3}>
-              <Typography component="h1" variant="h5">
+              <Typography component="h1" variant="h7">
                 Profile
               </Typography>
             </Grid>
