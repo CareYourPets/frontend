@@ -24,3 +24,27 @@ export const updatePetInfo = async petInfo => {
     throw new Error(error.detail);
   }
 };
+
+export const createPetInfo = async petInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post('/pet/create', petInfo, accessToken);
+    toast.success('Updated Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};
+
+export const deletePetInfo = async petInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post('/pet/delete', petInfo, accessToken);
+    toast.success('Deleted Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};

@@ -16,7 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { updatePetInfo } from 'utils/pet.service';
+import { updatePetInfo, deletePetInfo } from 'utils/pet.service';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -57,7 +57,7 @@ const PetProfile = ({
     setExpanded(isExpanded ? panel : false);
   };
 
-  const savePetInfo = async () => {
+  const savePet = async () => {
     try {
       await updatePetInfo({
         ...petInfo,
@@ -71,12 +71,18 @@ const PetProfile = ({
     }
   };
 
-  const editPetInfo = () => {
+  const editPet = () => {
     setIsEdit(true);
   };
 
-  const deletePetInfo = () => {
-    setIsEdit(true);
+  const deletePet = async () => {
+    try {
+      await deletePetInfo({ name });
+      setIsEdit(false);
+      await fetchPetOwnerPets();
+    } catch {
+      setIsEdit(true);
+    }
   };
 
   return (
@@ -107,7 +113,7 @@ const PetProfile = ({
                   type="button"
                   variant="contained"
                   color="primary"
-                  onClick={savePetInfo}
+                  onClick={savePet}
                 >
                   <SaveIcon />
                 </Button>
@@ -116,7 +122,7 @@ const PetProfile = ({
                   type="button"
                   variant="contained"
                   color="secondary"
-                  onClick={editPetInfo}
+                  onClick={editPet}
                 >
                   <EditIcon />
                 </Button>
@@ -125,7 +131,7 @@ const PetProfile = ({
                 type="button"
                 variant="contained"
                 color="default"
-                onClick={deletePetInfo}
+                onClick={deletePet}
               >
                 <DeleteIcon />
               </Button>
