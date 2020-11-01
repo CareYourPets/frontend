@@ -44,3 +44,18 @@ export const deleteCareTakerType = async payload => {
     throw new Error(error.detail);
   }
 };
+
+export const fetchAvailabilityInfo = async payload => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post(
+      '/user/caretaker/availability/info',
+      payload,
+      accessToken
+    );
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};

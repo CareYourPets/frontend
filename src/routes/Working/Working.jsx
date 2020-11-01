@@ -13,6 +13,7 @@ import {
 import { useUser } from 'contexts/UserContext';
 import { Button } from '@material-ui/core';
 import { CARE_TAKER_FULL_TIMER, CARE_TAKER_PART_TIMER } from 'utils/roleUtil';
+import WorkingDates from './WorkingDates';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -124,16 +125,23 @@ const Working = () => {
               </Grid>
             </div>
           ) : (
-            <Grid container justify="flex-end" className={classes.spacer}>
-              <Button
-                type="button"
-                variant="contained"
-                color="default"
-                onClick={() => deleteType(type)}
-              >
-                Delete
-              </Button>
-            </Grid>
+            <div>
+              <Grid container justify="flex-end" className={classes.spacer}>
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="default"
+                  onClick={() => deleteType(type)}
+                >
+                  Delete
+                </Button>
+              </Grid>
+              <Grid container className={classes.spacer}>
+                <Grid item xs={12}>
+                  <WorkingDates type={type} />
+                </Grid>
+              </Grid>
+            </div>
           )}
         </div>
       </Container>
