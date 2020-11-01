@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import { GENDERS, AREAS } from 'constants/variables';
+import { deleteUser } from 'utils/auth.service';
 import { updatePetOwnerInfo, updateCareTakerInfo } from 'utils/profile.service';
 import { CARE_TAKER, PET_OWNER } from 'utils/roleUtil';
 import { useUser } from 'contexts/UserContext';
@@ -39,9 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 const Profile = () => {
   const classes = useStyles();
-  const {
-    user: { role }
-  } = useUser();
+  const { user, handleUser } = useUser();
+  const { role } = user;
 
   const [profileInfo, setProfileInfo] = React.useState({
     area: '',
@@ -81,6 +81,15 @@ const Profile = () => {
     }
   };
 
+  const deleteProfile = async () => {
+    try {
+      await deleteUser();
+      handleUser({ ...user, isAuth: false });
+    } catch {
+      setIsEdit(false);
+    }
+  };
+
   return (
     <Drawer>
       <Container component="main" maxWidth="md">
@@ -113,6 +122,14 @@ const Profile = () => {
                     Edit
                   </Button>
                 )}
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="defauolt"
+                  onClick={deleteProfile}
+                >
+                  Delete
+                </Button>
               </Grid>
             </Grid>
           </Grid>
