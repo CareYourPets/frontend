@@ -127,7 +127,7 @@ const BidInfo = ({
       await fetchAllBids();
       setIsEdit(false);
     } catch {
-      setIsEdit(true);
+      return;
     }
   };
   return (
