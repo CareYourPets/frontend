@@ -15,7 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { login } from 'utils/auth.service';
-import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
+import { PET_OWNER, CARE_TAKER, ADMINISTRATOR } from 'utils/roleUtil';
 import { SIGN_UP } from 'constants/routes';
 
 const useStyles = makeStyles(theme => ({
@@ -53,7 +53,8 @@ const SignIn = () => {
 
   const rolesMapping = {
     'Care Taker': CARE_TAKER,
-    'Pet Owner': PET_OWNER
+    'Pet Owner': PET_OWNER,
+    Administrator: ADMINISTRATOR
   };
 
   const handleChangeForm = name => event => {

@@ -21,7 +21,7 @@ export const updatePetOwnerInfo = async profileInfo => {
       profileInfo,
       accessToken
     );
-    toast.success('Update Successfully');
+    toast.success('Updated Successfully');
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');
@@ -37,7 +37,19 @@ export const updateCareTakerInfo = async profileInfo => {
       profileInfo,
       accessToken
     );
-    toast.success('Update Successfully');
+    toast.success('Updated Successfully');
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};
+
+export const updateAdministratorInfo = async profileInfo => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post('/user/update/admin', profileInfo, accessToken);
+    toast.success('Updated Successfully');
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');
@@ -64,7 +76,7 @@ export const updateCareTakerSkills = async skill => {
       skill,
       accessToken
     );
-    toast.success('Update Successfully');
+    toast.success('Updated Successfully');
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');
@@ -95,7 +107,7 @@ export const createPetCategories = async skill => {
       skill,
       accessToken
     );
-    toast.success('Create Successfully');
+    toast.success('Created Successfully');
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');
@@ -111,7 +123,7 @@ export const deletePetCategories = async skill => {
       skill,
       accessToken
     );
-    toast.success('Create Successfully');
+    toast.success('Deleted Successfully');
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');

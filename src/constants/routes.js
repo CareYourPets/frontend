@@ -7,3 +7,4 @@ export const PROFILE = '/profile';
 export const PETS = '/pets';
 export const WORKING = '/working';
 export const SEARCH = '/search';
+export const CATEGORY = '/category';

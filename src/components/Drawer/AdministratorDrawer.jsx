@@ -16,12 +16,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DescriptionIcon from '@material-ui/icons/Description';
-import RestoreIcon from '@material-ui/icons/Restore';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import PetsIcon from '@material-ui/icons/Pets';
 import { useUser } from 'contexts/UserContext';
 import { logout } from 'utils/auth.service';
-import { BIDS, PROFILE, DASHBOARD, WORKING } from 'constants/routes';
+import { PROFILE, DASHBOARD, CATEGORY } from 'constants/routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CareTakerDrawer = ({ children }) => {
+const AdministratorDrawer = ({ children }) => {
   const { user, handleUser } = useUser();
   const classes = useStyles();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -53,19 +52,14 @@ const CareTakerDrawer = ({ children }) => {
       to: DASHBOARD
     },
     {
-      icon: <DescriptionIcon />,
-      text: 'Bid',
-      to: BIDS
-    },
-    {
       icon: <AccountCircleIcon />,
       text: 'Profile',
       to: PROFILE
     },
     {
-      icon: <RestoreIcon />,
-      text: 'Working',
-      to: WORKING
+      icon: <PetsIcon />,
+      text: 'Pet Categories',
+      to: CATEGORY
     }
   ];
 
@@ -130,7 +124,7 @@ const CareTakerDrawer = ({ children }) => {
             <MenuIcon onClick={toggleDrawer(true)} />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            CareYourPets: CareTaker
+            CareYourPets: Administrator
           </Typography>
           <Button color="inherit" onClick={() => onLogout()}>
             <ExitToAppIcon />
@@ -145,4 +139,4 @@ const CareTakerDrawer = ({ children }) => {
   );
 };
 
-export default CareTakerDrawer;
+export default AdministratorDrawer;
