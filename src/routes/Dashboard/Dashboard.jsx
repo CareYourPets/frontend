@@ -9,7 +9,14 @@ import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
 import Container from '@material-ui/core/Container';
 import Drawer from 'components/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { BIDS, PROFILE, PETS, SEARCH, WORKING } from 'constants/routes';
+import {
+  BIDS,
+  PROFILE,
+  PETS,
+  SEARCH,
+  WORKING,
+  CATEGORY
+} from 'constants/routes';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import RestoreIcon from '@material-ui/icons/Restore';
 import SearchIcon from '@material-ui/icons/Search';
@@ -109,6 +116,18 @@ const Dashboard = () => {
       to: PETS
     }
   ];
+  const AdministratorDrawerItems = [
+    {
+      icon: <AccountCircleIcon />,
+      text: 'Profile',
+      to: PROFILE
+    },
+    {
+      icon: <PetsIcon />,
+      text: 'Pet Categories',
+      to: CATEGORY
+    }
+  ];
 
   return (
     <Drawer>
@@ -116,17 +135,17 @@ const Dashboard = () => {
         <CssBaseline />
         <div className={classes.paper}>
           <Grid container className={classes.spacer}>
-            {role === PET_OWNER ? (
-              PetOwnerDrawerItems.map((item, i) => (
-                <DashboardCard key={i} {...item} />
-              ))
-            ) : role === CARE_TAKER ? (
-              CareTakerDrawerItems.map((item, i) => (
-                <DashboardCard key={i} {...item} />
-              ))
-            ) : (
-              <div />
-            )}
+            {role === PET_OWNER
+              ? PetOwnerDrawerItems.map((item, i) => (
+                  <DashboardCard key={i} {...item} />
+                ))
+              : role === CARE_TAKER
+              ? CareTakerDrawerItems.map((item, i) => (
+                  <DashboardCard key={i} {...item} />
+                ))
+              : AdministratorDrawerItems.map((item, i) => (
+                  <DashboardCard key={i} {...item} />
+                ))}
           </Grid>
         </div>
       </Container>

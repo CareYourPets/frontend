@@ -14,8 +14,12 @@ import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import { GENDERS, AREAS } from 'constants/variables';
 import { deleteUser } from 'utils/auth.service';
-import { updatePetOwnerInfo, updateCareTakerInfo } from 'utils/profile.service';
-import { CARE_TAKER, PET_OWNER } from 'utils/roleUtil';
+import {
+  updatePetOwnerInfo,
+  updateCareTakerInfo,
+  updateAdministratorInfo
+} from 'utils/profile.service';
+import { CARE_TAKER, PET_OWNER, ADMINISTRATOR } from 'utils/roleUtil';
 import { useUser } from 'contexts/UserContext';
 import CareTakerSkills from './CareTakerSkills';
 
@@ -73,6 +77,8 @@ const Profile = () => {
         await updatePetOwnerInfo(profileInfo);
       } else if (role === CARE_TAKER) {
         await updateCareTakerInfo(profileInfo);
+      } else if (role === ADMINISTRATOR) {
+        await updateAdministratorInfo(profileInfo);
       }
       await fetchProfile();
       setIsEdit(false);
@@ -170,31 +176,36 @@ const Profile = () => {
               )}
             </Grid>
           </Grid>
-          <Grid container className={classes.spacer}>
-            <Grid item xs={3}>
-              <Typography component="p" variant="h6">
-                Bio
-              </Typography>
-            </Grid>
-            <Grid item xs={9}>
-              {isEdit ? (
-                <TextField
-                  id="outlined-basic"
-                  label="Bio"
-                  variant="outlined"
-                  defaultValue={profileInfo.bio}
-                  fullWidth
-                  onChange={e =>
-                    setProfileInfo({ ...profileInfo, bio: e.target.value })
-                  }
-                />
-              ) : (
+          {role === ADMINISTRATOR ? (
+            <div />
+          ) : (
+            <Grid container className={classes.spacer}>
+              <Grid item xs={3}>
                 <Typography component="p" variant="h6">
-                  {profileInfo.bio}
+                  Bio
                 </Typography>
-              )}
+              </Grid>
+              <Grid item xs={9}>
+                {isEdit ? (
+                  <TextField
+                    id="outlined-basic"
+                    label="Bio"
+                    variant="outlined"
+                    defaultValue={profileInfo.bio}
+                    fullWidth
+                    onChange={e =>
+                      setProfileInfo({ ...profileInfo, bio: e.target.value })
+                    }
+                  />
+                ) : (
+                  <Typography component="p" variant="h6">
+                    {profileInfo.bio}
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
+          )}
+
           <Grid container className={classes.spacer}>
             <Grid item xs={3}>
               <Typography component="p" variant="h6">

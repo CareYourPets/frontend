@@ -7,7 +7,9 @@ import {
   BIDS,
   PETS,
   WORKING,
-  SEARCH
+  SEARCH,
+  ROOT,
+  CATEGORY
 } from 'constants/routes';
 import Dashboard from 'routes/Dashboard';
 import Profile from 'routes/Profile';
@@ -15,6 +17,7 @@ import Bid from 'routes/Bid';
 import Pet from 'routes/Pet';
 import Working from 'routes/Working';
 import Search from 'routes/Search';
+import Category from 'routes/Category';
 
 const AuthenticatedApp = () => {
   return (
@@ -25,7 +28,8 @@ const AuthenticatedApp = () => {
       <Route exact path={PETS} component={Pet} />
       <Route exact path={WORKING} component={Working} />
       <Route exact path={SEARCH} component={Search} />
-      <Redirect to={DASHBOARD} />
+      <Route exact path={CATEGORY} component={Category} />
+      <Redirect to={ROOT} />
     </Switch>
   );
 };

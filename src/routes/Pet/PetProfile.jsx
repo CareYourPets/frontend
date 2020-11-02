@@ -97,12 +97,11 @@ const PetProfile = ({
           id="panel1bh-header"
         >
           <Grid container>
-            <Grid item xs={3}>
+            <Grid item xs={12}>
               <Typography component="p" variant="h6">
-                <PetsIcon /> {name}
+                <PetsIcon /> Name:{name} Category:{category}
               </Typography>
             </Grid>
-            <Grid item xs={9}></Grid>
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
