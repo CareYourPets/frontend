@@ -56,7 +56,8 @@ const BidInfo = ({
   start_date,
   transaction_date,
   transportation_mode,
-  fetchAllBids
+  fetchAllBids,
+  rating
 }) => {
   const classes = useStyles();
   const { user } = useUser();
@@ -79,7 +80,8 @@ const BidInfo = ({
     reviewDate: review_date,
     startDate: start_date,
     transactionDate: transaction_date,
-    transportationMode: transportation_mode
+    transportationMode: transportation_mode,
+    rating: rating
   });
   const [isEdit, setIsEdit] = React.useState(false);
 
@@ -289,6 +291,45 @@ const BidInfo = ({
                 ) : (
                   <Typography component="p" variant="h6">
                     {bidInfo.review}
+                  </Typography>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container className={classes.spacer}>
+              <Grid item xs={3}>
+                <Typography component="p" variant="h6">
+                  Rating
+                </Typography>
+              </Grid>
+              <Grid item xs={9}>
+                {isEdit ? (
+                  <FormControl
+                    variant="outlined"
+                    className={classes.formControl}
+                    fullWidth
+                  >
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Rating
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={bidInfo.rating}
+                      onChange={e =>
+                        setBidInfo({ ...bidInfo, rating: e.target.value })
+                      }
+                      label="Payment Mode"
+                    >
+                      {[0, 1, 2, 3, 4, 5].map(item => (
+                        <MenuItem key={item} value={item}>
+                          {item}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                ) : (
+                  <Typography component="p" variant="h6">
+                    {bidInfo.rating}
                   </Typography>
                 )}
               </Grid>

@@ -12,6 +12,7 @@ import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import { createBid } from 'utils/bid.service';
 import { useUser } from 'contexts/UserContext';
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -64,7 +65,8 @@ const CareTakerProfile = ({
   area,
   location,
   bio,
-  pets
+  pets,
+  skills
 }) => {
   const classes = useStyles();
   const { user } = useUser();
@@ -297,6 +299,20 @@ const CareTakerProfile = ({
             {location === null ? 'NA' : location}
           </Typography>
         </Grid>
+      </Grid>
+
+      <Grid justify="center" container className={classes.spacer}>
+        {skills === undefined ? (
+          <div />
+        ) : (
+          skills.map(skill => (
+            <Chip
+              key={skill.category}
+              color="primary"
+              label={`${skill.category}: $${skill.price}`}
+            />
+          ))
+        )}
       </Grid>
     </div>
   );
