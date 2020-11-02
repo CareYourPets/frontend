@@ -7,12 +7,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Slider from 'react-slick';
 import TouchAppIcon from '@material-ui/icons/TouchApp';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 import CareTakerProfile from './CareTakerProfile';
 
 const useStyles = makeStyles(theme => ({
@@ -28,14 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const Search = () => {
   const classes = useStyles();
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true
-  };
+  const [slide, setSlide] = React.useState(0);
   const [isByLocation, setIsByLocation] = React.useState(false);
   const [careTakers, setCareTakers] = React.useState([]);
   const [pets, setPets] = React.useState([]);
@@ -106,11 +99,33 @@ const Search = () => {
               </FormControl>
             </Typography>
           </Grid>
-          <Slider {...settings}>
-            {careTakers.map((careTaker, i) => (
-              <CareTakerProfile key={i} {...careTaker} pets={pets} />
-            ))}
-          </Slider>
+          <CareTakerProfile {...careTakers[slide]} pets={pets} />
+          <Grid container>
+            <Grid item xs={6}>
+              <Button
+                type="button"
+                variant="contained"
+                color="default"
+                fullWidth
+                onClick={() => setSlide(slide === 0 ? 0 : slide - 1)}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                type="button"
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={() =>
+                  setSlide(slide === careTakers.length - 1 ? slide : slide + 1)
+                }
+              >
+                Next
+              </Button>
+            </Grid>
+          </Grid>
         </div>
       </Container>
     </Drawer>
