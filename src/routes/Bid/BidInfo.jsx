@@ -24,6 +24,7 @@ import moment from 'moment';
 import { MOMENT_TIME_FORMAT } from 'constants/time';
 import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
 import CheckIcon from '@material-ui/icons/Check';
+import Modal from '@material-ui/core/Modal';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,8 +41,26 @@ const useStyles = makeStyles(theme => ({
     flexBasis: '33.33%',
     flexShrink: 0
   },
-  secondaryHeading: {}
+  secondaryHeading: {},
+  model: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2, 4, 3),
+    outline: 'None'
+  }
 }));
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
 
 const BidInfo = ({
   amount,
@@ -57,7 +76,13 @@ const BidInfo = ({
   transaction_date,
   transportation_mode,
   fetchAllBids,
-  rating
+  rating,
+  area,
+  bio,
+  gender,
+  location,
+  name,
+  contact
 }) => {
   const classes = useStyles();
   const { user } = useUser();
@@ -67,6 +92,8 @@ const BidInfo = ({
     'TRANSFER_THROUGH_PCS'
   ];
   const paymentMode = ['CASH', 'CREDIT'];
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [bidInfo, setBidInfo] = React.useState({
     amount,
@@ -93,6 +120,8 @@ const BidInfo = ({
     try {
       await updateBid({
         ...bidInfo,
+        amount:
+          bidInfo.amount === null || bidInfo.amount < 1 ? 0 : bidInfo.amount,
         reviewDate:
           bidInfo.review === null
             ? null
@@ -132,8 +161,105 @@ const BidInfo = ({
       return;
     }
   };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.model}>
+      <Typography component="h1" variant="h5">
+        Care Taker Info
+      </Typography>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Email
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {care_taker_email}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Contact
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {contact}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Area:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {area}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Location:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {location}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Gender:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {gender}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Bio:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {bio}
+          </Typography>
+        </Grid>
+      </Grid>
+    </div>
+  );
+
   return (
     <div className={classes.paper}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
       <Accordion
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}
@@ -144,37 +270,55 @@ const BidInfo = ({
           id="panel1bh-header"
         >
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Typography component="p" variant="h6">
                 <DescriptionIcon /> Pet: {bidInfo.petName}
               </Typography>
             </Grid>
-            <Grid item xs={8}>
-              <Grid container justify="flex-end">
-                <Typography component="p" variant="h6">
-                  {bidInfo.isAccepted ? 'Accepted' : 'Pending'}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Typography component="p" variant="h6">
-                CareTaker: {bidInfo.careTakerEmail}
+                {bidInfo.isAccepted ? 'Accepted' : 'Pending'}
               </Typography>
             </Grid>
-            <Grid item xs={8}>
-              <Grid container justify="flex-end">
-                <Typography component="p" variant="h6">
-                  Start Date:
-                  <Moment format="YYYY/MM/DD">{bidInfo.startDate}</Moment> End
-                  Date:
-                  <Moment format="YYYY/MM/DD">{bidInfo.endDate}</Moment>
-                </Typography>
-              </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                CareTaker: {name}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                Amount:{' '}
+                {bidInfo.amount === null || bidInfo.amount < 1
+                  ? 'NA'
+                  : bidInfo.amount}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                Start Date:
+                <Moment format="YYYY/MM/DD">{bidInfo.startDate}</Moment>
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                End Date:
+                <Moment format="YYYY/MM/DD">{bidInfo.endDate}</Moment>
+              </Typography>
             </Grid>
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container>
+            <Grid container justify="flex-end">
+              <Button
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={handleOpen}
+              >
+                View Profile
+              </Button>
+            </Grid>
             {user.role === PET_OWNER ? (
               bidInfo.isAccepted ? (
                 <div />
@@ -227,7 +371,6 @@ const BidInfo = ({
             ) : (
               <div />
             )}
-
             <Grid container className={classes.spacer}>
               <Grid item xs={3}>
                 <Typography component="p" variant="h6">
@@ -265,7 +408,9 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.transportationMode}
+                    {bidInfo.transportationMode === null
+                      ? 'NA'
+                      : bidInfo.transactionMode}
                   </Typography>
                 )}
               </Grid>
@@ -290,7 +435,9 @@ const BidInfo = ({
                   />
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.review}
+                    {bidInfo.review === null || bidInfo.review === ''
+                      ? 'NA'
+                      : bidInfo.review}
                   </Typography>
                 )}
               </Grid>
@@ -320,7 +467,7 @@ const BidInfo = ({
                       }
                       label="Payment Mode"
                     >
-                      {[0, 1, 2, 3, 4, 5].map(item => (
+                      {[1, 2, 3, 4, 5].map(item => (
                         <MenuItem key={item} value={item}>
                           {item}
                         </MenuItem>
@@ -329,7 +476,7 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.rating}
+                    {bidInfo.rating === 0 ? 'NA' : bidInfo.rating}
                   </Typography>
                 )}
               </Grid>
@@ -368,32 +515,7 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.paymentMode}
-                  </Typography>
-                )}
-              </Grid>
-            </Grid>
-            <Grid container className={classes.spacer}>
-              <Grid item xs={3}>
-                <Typography component="p" variant="h6">
-                  Amount
-                </Typography>
-              </Grid>
-              <Grid item xs={9}>
-                {isEdit ? (
-                  <TextField
-                    id="outlined-basic"
-                    label="Amount"
-                    variant="outlined"
-                    defaultValue={bidInfo.amount}
-                    fullWidth
-                    onChange={e =>
-                      setBidInfo({ ...bidInfo, amount: e.target.value })
-                    }
-                  />
-                ) : (
-                  <Typography component="p" variant="h6">
-                    {bidInfo.amount}
+                    {bidInfo.paymentMode === null ? 'NA' : bidInfo.paymentMode}
                   </Typography>
                 )}
               </Grid>

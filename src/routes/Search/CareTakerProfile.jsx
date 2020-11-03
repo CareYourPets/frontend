@@ -13,6 +13,9 @@ import { Button } from '@material-ui/core';
 import { createBid } from 'utils/bid.service';
 import { useUser } from 'contexts/UserContext';
 import Chip from '@material-ui/core/Chip';
+import { fetchCareTakerReviews } from 'utils/pet.service';
+import { CARE_TAKER_FULL_TIMER, CARE_TAKER_PART_TIMER } from 'utils/roleUtil';
+import CareTakerReview from './CareTakerReview';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -66,7 +69,8 @@ const CareTakerProfile = ({
   location,
   bio,
   pets,
-  skills
+  type,
+  skills = []
 }) => {
   const classes = useStyles();
   const { user } = useUser();
@@ -77,6 +81,8 @@ const CareTakerProfile = ({
     startDate: null,
     endDate: null
   });
+  const [reviews, setReviews] = React.useState([]);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -97,6 +103,30 @@ const CareTakerProfile = ({
       setOpen(true);
     }
   };
+
+  const petsToBid = [];
+  const categories = skills.map(skill => skill.category);
+  // eslint-disable-next-line
+  pets.map(pet => {
+    const { name, category } = pet;
+    if (categories.includes(category)) {
+      petsToBid.push({ name, category });
+    }
+  });
+
+  const fetchReviews = async () => {
+    if (email === null || email === undefined) return;
+    try {
+      const data = await fetchCareTakerReviews({ careTakerEmail: email });
+      setReviews(data);
+    } catch {
+      setReviews(reviews);
+    }
+  };
+  React.useEffect(() => {
+    fetchReviews();
+    // eslint-disable-next-line
+  }, [email]);
   const body = (
     <div style={modalStyle} className={classes.model}>
       <Typography component="h1" variant="h5">
@@ -124,9 +154,9 @@ const CareTakerProfile = ({
               onChange={e => setBid({ ...bid, petName: e.target.value })}
               label="Pet Name"
             >
-              {pets.map(item => (
-                <MenuItem key={item} value={item}>
-                  {item}
+              {petsToBid.map(item => (
+                <MenuItem key={item.name} value={item.name}>
+                  {item.name} ({item.category})
                 </MenuItem>
               ))}
             </Select>
@@ -301,6 +331,25 @@ const CareTakerProfile = ({
         </Grid>
       </Grid>
 
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Type
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {type === CARE_TAKER_PART_TIMER
+              ? 'Part Time'
+              : type === CARE_TAKER_FULL_TIMER
+              ? 'Full Time'
+              : 'Unspecified'}
+          </Typography>
+        </Grid>
+      </Grid>
+
       <Grid justify="center" container className={classes.spacer}>
         {skills === undefined ? (
           <div />
@@ -313,6 +362,10 @@ const CareTakerProfile = ({
             />
           ))
         )}
+      </Grid>
+
+      <Grid container className={classes.spacer}>
+        <CareTakerReview reviews={reviews}></CareTakerReview>
       </Grid>
     </div>
   );

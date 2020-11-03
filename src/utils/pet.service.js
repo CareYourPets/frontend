@@ -84,3 +84,18 @@ export const deletePetCategories = async payload => {
     throw new Error(error.detail);
   }
 };
+
+export const fetchCareTakerReviews = async payload => {
+  try {
+    const accessToken = getAccessToken();
+    const data = await API.post(
+      '/pet/caretaker/reviews/fetch',
+      payload,
+      accessToken
+    );
+    return data;
+  } catch (error) {
+    toast.error('Something Went Wrong');
+    throw new Error(error.detail);
+  }
+};

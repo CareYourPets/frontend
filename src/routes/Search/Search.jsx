@@ -47,7 +47,7 @@ const Search = () => {
       const data = await fetchPets();
       const names = [];
       data.forEach((item, _) => {
-        names.push(item.name);
+        names.push({ name: item.name, category: item.category });
         return;
       });
       setPets(names);
@@ -73,7 +73,7 @@ const Search = () => {
         <div className={classes.paper}>
           <Grid container justify="center" className={classes.spacer}>
             <Typography component="h1" variant="h7">
-              Swipe To Find Your CareTaker <TouchAppIcon />
+              Find Your CareTaker <TouchAppIcon />
             </Typography>
           </Grid>
           <Grid container justify="center" className={classes.spacer}>
@@ -99,7 +99,6 @@ const Search = () => {
               </FormControl>
             </Typography>
           </Grid>
-          <CareTakerProfile {...careTakers[slide]} pets={pets} />
           <Grid container>
             <Grid item xs={6}>
               <Button
@@ -126,6 +125,7 @@ const Search = () => {
               </Button>
             </Grid>
           </Grid>
+          <CareTakerProfile {...careTakers[slide]} pets={pets} />
         </div>
       </Container>
     </Drawer>

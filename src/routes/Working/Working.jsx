@@ -5,11 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import {
-  getCareTakerRole,
-  createCareTakerType,
-  deleteCareTakerType
-} from 'utils/work.service';
+import { getCareTakerRole, createCareTakerType } from 'utils/work.service';
 import { useUser } from 'contexts/UserContext';
 import { Button } from '@material-ui/core';
 import { CARE_TAKER_FULL_TIMER, CARE_TAKER_PART_TIMER } from 'utils/roleUtil';
@@ -59,15 +55,6 @@ const Working = () => {
   const createType = async type => {
     try {
       await createCareTakerType({ type });
-      await getEmployeeRoleWorkingDays();
-    } catch {
-      setType(type);
-    }
-  };
-
-  const deleteType = async type => {
-    try {
-      await deleteCareTakerType({ type });
       await getEmployeeRoleWorkingDays();
     } catch {
       setType(type);
@@ -126,16 +113,6 @@ const Working = () => {
             </div>
           ) : (
             <div>
-              <Grid container justify="flex-end" className={classes.spacer}>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="default"
-                  onClick={() => deleteType(type)}
-                >
-                  Delete
-                </Button>
-              </Grid>
               <Grid container justify="center" className={classes.spacer}>
                 <Typography component="h1" variant="h7">
                   Click to apply or cancel date
