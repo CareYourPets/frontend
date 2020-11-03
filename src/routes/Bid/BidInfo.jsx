@@ -24,6 +24,7 @@ import moment from 'moment';
 import { MOMENT_TIME_FORMAT } from 'constants/time';
 import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
 import CheckIcon from '@material-ui/icons/Check';
+import Modal from '@material-ui/core/Modal';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,8 +41,26 @@ const useStyles = makeStyles(theme => ({
     flexBasis: '33.33%',
     flexShrink: 0
   },
-  secondaryHeading: {}
+  secondaryHeading: {},
+  model: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2, 4, 3),
+    outline: 'None'
+  }
 }));
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
 
 const BidInfo = ({
   amount,
@@ -57,7 +76,13 @@ const BidInfo = ({
   transaction_date,
   transportation_mode,
   fetchAllBids,
-  rating
+  rating,
+  area,
+  bio,
+  gender,
+  location,
+  name,
+  contact
 }) => {
   const classes = useStyles();
   const { user } = useUser();
@@ -67,6 +92,8 @@ const BidInfo = ({
     'TRANSFER_THROUGH_PCS'
   ];
   const paymentMode = ['CASH', 'CREDIT'];
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [bidInfo, setBidInfo] = React.useState({
     amount,
@@ -134,8 +161,105 @@ const BidInfo = ({
       return;
     }
   };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.model}>
+      <Typography component="h1" variant="h5">
+        Care Taker Info
+      </Typography>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Email
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {care_taker_email}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Contact
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {contact}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Area:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {area}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Location:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {location}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Gender:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {gender}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Typography component="p" variant="h6">
+            Bio:
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {bio}
+          </Typography>
+        </Grid>
+      </Grid>
+    </div>
+  );
+
   return (
     <div className={classes.paper}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
       <Accordion
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}
@@ -158,7 +282,7 @@ const BidInfo = ({
             </Grid>
             <Grid item xs={6}>
               <Typography component="p" variant="h6">
-                CareTaker: {bidInfo.careTakerEmail}
+                CareTaker: {name}
               </Typography>
             </Grid>
             <Grid item xs={6}>
@@ -185,6 +309,16 @@ const BidInfo = ({
         </AccordionSummary>
         <AccordionDetails>
           <Grid container>
+            <Grid container justify="flex-end">
+              <Button
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={handleOpen}
+              >
+                View Profile
+              </Button>
+            </Grid>
             {user.role === PET_OWNER ? (
               bidInfo.isAccepted ? (
                 <div />
