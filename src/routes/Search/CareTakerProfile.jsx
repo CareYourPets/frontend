@@ -66,7 +66,7 @@ const CareTakerProfile = ({
   location,
   bio,
   pets,
-  skills
+  skills = []
 }) => {
   const classes = useStyles();
   const { user } = useUser();
@@ -77,6 +77,8 @@ const CareTakerProfile = ({
     startDate: null,
     endDate: null
   });
+  // const [petsToBid, setPetsToBid] = React.useState([]);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -97,6 +99,17 @@ const CareTakerProfile = ({
       setOpen(true);
     }
   };
+
+  const petsToBid = [];
+  const categories = skills.map(skill => skill.category);
+  // eslint-disable-next-line
+  pets.map(pet => {
+    const { name, category } = pet;
+    if (categories.includes(category)) {
+      petsToBid.push({ name, category });
+    }
+  });
+
   const body = (
     <div style={modalStyle} className={classes.model}>
       <Typography component="h1" variant="h5">
@@ -124,9 +137,9 @@ const CareTakerProfile = ({
               onChange={e => setBid({ ...bid, petName: e.target.value })}
               label="Pet Name"
             >
-              {pets.map(item => (
-                <MenuItem key={item} value={item}>
-                  {item}
+              {petsToBid.map(item => (
+                <MenuItem key={item.name} value={item.name}>
+                  {item.name} ({item.category})
                 </MenuItem>
               ))}
             </Select>

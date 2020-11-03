@@ -47,7 +47,7 @@ const Search = () => {
       const data = await fetchPets();
       const names = [];
       data.forEach((item, _) => {
-        names.push(item.name);
+        names.push({ name: item.name, category: item.category });
         return;
       });
       setPets(names);
