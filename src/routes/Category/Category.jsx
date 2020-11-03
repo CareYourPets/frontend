@@ -248,9 +248,6 @@ const Category = () => {
             {Object.keys(categories).map(category => (
               <Grid container className={classes.spacer} key={category}>
                 <Grid item xs={3}>
-                  {/* <Typography component="p" variant="h6">
-              {category}
-            </Typography> */}
                   {categories[category].isEdit === true ? (
                     <TextField
                       id="outlined-basic"
@@ -287,7 +284,7 @@ const Category = () => {
                     />
                   ) : (
                     <Typography component="p" variant="h6">
-                      ${categories[category].base_price}
+                      ${parseFloat(categories[category].base_price).toFixed(2)}
                     </Typography>
                   )}
                 </Grid>

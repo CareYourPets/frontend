@@ -59,7 +59,7 @@ const CareTakerReviews = ({ reviews = [] }) => {
             </Grid>
             <Grid container justify="center" className={classes.spacer}>
               <Typography component="h4" variant="h7">
-                Rating: {review.rating}
+                Rating: {parseFloat(review.rating).toFixed(1)}
               </Typography>
             </Grid>
           </Grid>

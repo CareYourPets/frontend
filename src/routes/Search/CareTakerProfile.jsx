@@ -358,7 +358,9 @@ const CareTakerProfile = ({
             <Chip
               key={skill.category}
               color="primary"
-              label={`${skill.category}: $${skill.price}`}
+              label={`${skill.category}: $${parseFloat(skill.price).toFixed(
+                2
+              )}`}
             />
           ))
         )}

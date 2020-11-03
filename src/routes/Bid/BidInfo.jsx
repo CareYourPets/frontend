@@ -173,7 +173,11 @@ const BidInfo = ({
   const body = (
     <div style={modalStyle} className={classes.model}>
       <Typography component="h1" variant="h5">
-        Care Taker Info
+        {user.role === PET_OWNER
+          ? 'Care Taker Info'
+          : user.role === CARE_TAKER
+          ? 'Pet Owner Info'
+          : 'Unspecified'}
       </Typography>
       <Grid container className={classes.spacer}>
         <Grid item xs={3}>
@@ -290,7 +294,7 @@ const BidInfo = ({
                 Amount:{' '}
                 {bidInfo.amount === null || bidInfo.amount < 1
                   ? 'NA'
-                  : bidInfo.amount}
+                  : `$${parseFloat(bidInfo.amount).toFixed(2)}`}
               </Typography>
             </Grid>
             <Grid item xs={6}>
@@ -320,7 +324,7 @@ const BidInfo = ({
               </Button>
             </Grid>
             {user.role === PET_OWNER ? (
-              bidInfo.isAccepted ? (
+              bidInfo.isAccepted && user.role === CARE_TAKER ? (
                 <div />
               ) : (
                 <Grid container justify="flex-end">
@@ -378,7 +382,7 @@ const BidInfo = ({
                 </Typography>
               </Grid>
               <Grid item xs={9}>
-                {isEdit ? (
+                {isEdit && !bidInfo.isAccepted ? (
                   <FormControl
                     fullWidth
                     variant="outlined"
@@ -410,7 +414,7 @@ const BidInfo = ({
                   <Typography component="p" variant="h6">
                     {bidInfo.transportationMode === null
                       ? 'NA'
-                      : bidInfo.transactionMode}
+                      : bidInfo.transportationMode}
                   </Typography>
                 )}
               </Grid>
@@ -476,7 +480,9 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.rating === 0 ? 'NA' : bidInfo.rating}
+                    {bidInfo.rating === 0
+                      ? 'NA'
+                      : parseFloat(bidInfo.rating).toFixed(1)}
                   </Typography>
                 )}
               </Grid>
@@ -488,7 +494,7 @@ const BidInfo = ({
                 </Typography>
               </Grid>
               <Grid item xs={9}>
-                {isEdit ? (
+                {isEdit && !bidInfo.isAccepted ? (
                   <FormControl
                     variant="outlined"
                     className={classes.formControl}

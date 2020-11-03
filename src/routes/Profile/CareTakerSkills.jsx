@@ -64,7 +64,7 @@ const CareTakerSkill = () => {
   const [open, setOpen] = React.useState(false);
   const [newSkill, setNewSkill] = React.useState({ category: '', price: 0 });
 
-  const [categories, setCategories] = React.useState([]);
+  const [categories, setCategories] = React.useState({});
   const [skills, setSkills] = React.useState({});
 
   const fetchSkills = async () => {
@@ -121,12 +121,10 @@ const CareTakerSkill = () => {
   const fetchCategories = async () => {
     try {
       const rawCategories = await fetchPetCategories();
-      const updatedCategories = [];
-      rawCategories.forEach((item, _) => {
-        updatedCategories.push(item.category);
-        return;
-      });
-      setCategories(updatedCategories);
+      const reducedData = rawCategories.reduce((prev, item) => {
+        return { ...prev, [item.category]: item.base_price };
+      }, {});
+      setCategories(reducedData);
     } catch {
       setCategories(categories);
     }
@@ -175,39 +173,21 @@ const CareTakerSkill = () => {
               id="demo-simple-select-outlined"
               value={newSkill.category}
               onChange={e =>
-                setNewSkill({ ...newSkill, category: e.target.value })
+                setNewSkill({
+                  ...newSkill,
+                  price: categories[e.target.value],
+                  category: e.target.value
+                })
               }
               label="Category"
             >
-              {categories.map(item => (
-                <MenuItem key={item} value={item}>
-                  {item}
+              {Object.keys(categories).map(category => (
+                <MenuItem key={category} value={category}>
+                  {category} (${parseFloat(categories[category]).toFixed(2)})
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </Grid>
-      </Grid>
-      <Grid container className={classes.spacer}>
-        <Grid item xs={3}>
-          <Typography component="p" variant="h6">
-            Rate
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <TextField
-            id="outlined-basic"
-            label="Price"
-            variant="outlined"
-            defaultValue={newSkill.price}
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              )
-            }}
-            onChange={e => setNewSkill({ ...newSkill, price: e.target.value })}
-          />
         </Grid>
       </Grid>
       <Grid container justify="flex-end" className={classes.spacer}>
@@ -217,7 +197,7 @@ const CareTakerSkill = () => {
           color="primary"
           onClick={addCategory}
         >
-          Create
+          Add
         </Button>
       </Grid>
     </div>
@@ -276,7 +256,7 @@ const CareTakerSkill = () => {
               />
             ) : (
               <Typography component="p" variant="h6">
-                ${skills[skill].price}
+                ${parseFloat(skills[skill].price).toFixed(2)}
               </Typography>
             )}
           </Grid>
