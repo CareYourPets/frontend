@@ -1,5 +1,5 @@
 import React from 'react';
-import { PET_OWNER, CARE_TAKER } from 'utils/roleUtil';
+import { PET_OWNER, CARE_TAKER, ADMINISTRATOR } from 'utils/roleUtil';
 import { useUser } from 'contexts/UserContext';
 import PetOwnerDrawer from './PetOwnerDrawer';
 import CareTakerDrawer from './CareTakerDrawer';
@@ -13,8 +13,10 @@ const Drawer = ({ children }) => {
     return <PetOwnerDrawer>{children}</PetOwnerDrawer>;
   } else if (role === CARE_TAKER) {
     return <CareTakerDrawer>{children}</CareTakerDrawer>;
-  } else {
+  } else if (role === ADMINISTRATOR) {
     return <AdministratorDrawer>{children}</AdministratorDrawer>;
+  } else {
+    return <div />;
   }
 };
 

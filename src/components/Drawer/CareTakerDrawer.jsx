@@ -71,7 +71,7 @@ const CareTakerDrawer = ({ children }) => {
 
   const onLogout = () => {
     logout();
-    handleUser({ ...user, isAuth: false });
+    handleUser({ ...user, email: '', role: '', isAuth: false });
   };
   const toggleDrawer = open => event => {
     if (
