@@ -14,6 +14,7 @@ import { createBid } from 'utils/bid.service';
 import { useUser } from 'contexts/UserContext';
 import Chip from '@material-ui/core/Chip';
 import { fetchCareTakerReviews } from 'utils/pet.service';
+import { CARE_TAKER_FULL_TIMER, CARE_TAKER_PART_TIMER } from 'utils/roleUtil';
 import CareTakerReview from './CareTakerReview';
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +69,7 @@ const CareTakerProfile = ({
   location,
   bio,
   pets,
+  type,
   skills = []
 }) => {
   const classes = useStyles();
@@ -325,6 +327,25 @@ const CareTakerProfile = ({
         <Grid item xs={9}>
           <Typography component="p" variant="h6">
             {location === null ? 'NA' : location}
+          </Typography>
+        </Grid>
+      </Grid>
+
+      <Grid container className={classes.spacer}>
+        <Grid item xs={3}>
+          <Grid container justify="center">
+            <Typography component="h1" variant="h7">
+              Type
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography component="p" variant="h6">
+            {type === CARE_TAKER_PART_TIMER
+              ? 'Part Time'
+              : type === CARE_TAKER_FULL_TIMER
+              ? 'Full Time'
+              : 'Unspecified'}
           </Typography>
         </Grid>
       </Grid>
