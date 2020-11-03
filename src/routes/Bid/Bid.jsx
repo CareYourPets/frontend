@@ -22,15 +22,12 @@ const useStyles = makeStyles(theme => ({
 
 const Bids = () => {
   const classes = useStyles();
-  const [bids, setBids] = React.useState({});
+  const [bids, setBids] = React.useState([]);
 
   const fetchAllBids = async () => {
     try {
       const data = await fetchBids();
-      const reducedData = data.reduce((prev, bid) => {
-        return { ...prev, [bid.start_date]: { ...bid } };
-      }, {});
-      setBids(reducedData);
+      setBids(data);
     } catch {
       setBids(bids);
     }
@@ -53,8 +50,8 @@ const Bids = () => {
               </Typography>
             </Grid>
           </Grid>
-          {Object.keys(bids).map((date, i) => (
-            <BidInfo fetchAllBids={fetchAllBids} {...bids[date]} key={i} />
+          {bids.map((bid, i) => (
+            <BidInfo fetchAllBids={fetchAllBids} {...bid} key={i} />
           ))}
         </div>
       </Container>

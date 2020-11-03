@@ -93,6 +93,8 @@ const BidInfo = ({
     try {
       await updateBid({
         ...bidInfo,
+        amount:
+          bidInfo.amount === null || bidInfo.amount < 1 ? 0 : bidInfo.amount,
         reviewDate:
           bidInfo.review === null
             ? null
@@ -144,32 +146,40 @@ const BidInfo = ({
           id="panel1bh-header"
         >
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Typography component="p" variant="h6">
                 <DescriptionIcon /> Pet: {bidInfo.petName}
               </Typography>
             </Grid>
-            <Grid item xs={8}>
-              <Grid container justify="flex-end">
-                <Typography component="p" variant="h6">
-                  {bidInfo.isAccepted ? 'Accepted' : 'Pending'}
-                </Typography>
-              </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                {bidInfo.isAccepted ? 'Accepted' : 'Pending'}
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Typography component="p" variant="h6">
                 CareTaker: {bidInfo.careTakerEmail}
               </Typography>
             </Grid>
-            <Grid item xs={8}>
-              <Grid container justify="flex-end">
-                <Typography component="p" variant="h6">
-                  Start Date:
-                  <Moment format="YYYY/MM/DD">{bidInfo.startDate}</Moment> End
-                  Date:
-                  <Moment format="YYYY/MM/DD">{bidInfo.endDate}</Moment>
-                </Typography>
-              </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                Amount:{' '}
+                {bidInfo.amount === null || bidInfo.amount < 1
+                  ? 'NA'
+                  : bidInfo.amount}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                Start Date:
+                <Moment format="YYYY/MM/DD">{bidInfo.startDate}</Moment>
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography component="p" variant="h6">
+                End Date:
+                <Moment format="YYYY/MM/DD">{bidInfo.endDate}</Moment>
+              </Typography>
             </Grid>
           </Grid>
         </AccordionSummary>
@@ -227,7 +237,6 @@ const BidInfo = ({
             ) : (
               <div />
             )}
-
             <Grid container className={classes.spacer}>
               <Grid item xs={3}>
                 <Typography component="p" variant="h6">
@@ -265,7 +274,9 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.transportationMode}
+                    {bidInfo.transportationMode === null
+                      ? 'NA'
+                      : bidInfo.transactionMode}
                   </Typography>
                 )}
               </Grid>
@@ -290,7 +301,9 @@ const BidInfo = ({
                   />
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.review}
+                    {bidInfo.review === null || bidInfo.review === ''
+                      ? 'NA'
+                      : bidInfo.review}
                   </Typography>
                 )}
               </Grid>
@@ -320,7 +333,7 @@ const BidInfo = ({
                       }
                       label="Payment Mode"
                     >
-                      {[0, 1, 2, 3, 4, 5].map(item => (
+                      {[1, 2, 3, 4, 5].map(item => (
                         <MenuItem key={item} value={item}>
                           {item}
                         </MenuItem>
@@ -329,7 +342,7 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.rating}
+                    {bidInfo.rating === 0 ? 'NA' : bidInfo.rating}
                   </Typography>
                 )}
               </Grid>
@@ -368,32 +381,7 @@ const BidInfo = ({
                   </FormControl>
                 ) : (
                   <Typography component="p" variant="h6">
-                    {bidInfo.paymentMode}
-                  </Typography>
-                )}
-              </Grid>
-            </Grid>
-            <Grid container className={classes.spacer}>
-              <Grid item xs={3}>
-                <Typography component="p" variant="h6">
-                  Amount
-                </Typography>
-              </Grid>
-              <Grid item xs={9}>
-                {isEdit ? (
-                  <TextField
-                    id="outlined-basic"
-                    label="Amount"
-                    variant="outlined"
-                    defaultValue={bidInfo.amount}
-                    fullWidth
-                    onChange={e =>
-                      setBidInfo({ ...bidInfo, amount: e.target.value })
-                    }
-                  />
-                ) : (
-                  <Typography component="p" variant="h6">
-                    {bidInfo.amount}
+                    {bidInfo.paymentMode === null ? 'NA' : bidInfo.paymentMode}
                   </Typography>
                 )}
               </Grid>
