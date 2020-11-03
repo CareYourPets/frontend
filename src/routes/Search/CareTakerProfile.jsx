@@ -13,6 +13,8 @@ import { Button } from '@material-ui/core';
 import { createBid } from 'utils/bid.service';
 import { useUser } from 'contexts/UserContext';
 import Chip from '@material-ui/core/Chip';
+import { fetchCareTakerReviews } from 'utils/pet.service';
+import CareTakerReview from './CareTakerReview';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -77,7 +79,7 @@ const CareTakerProfile = ({
     startDate: null,
     endDate: null
   });
-  // const [petsToBid, setPetsToBid] = React.useState([]);
+  const [reviews, setReviews] = React.useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -110,6 +112,19 @@ const CareTakerProfile = ({
     }
   });
 
+  const fetchReviews = async () => {
+    if (email === null || email === undefined) return;
+    try {
+      const data = await fetchCareTakerReviews({ careTakerEmail: email });
+      setReviews(data);
+    } catch {
+      setReviews(reviews);
+    }
+  };
+  React.useEffect(() => {
+    fetchReviews();
+    // eslint-disable-next-line
+  }, [email]);
   const body = (
     <div style={modalStyle} className={classes.model}>
       <Typography component="h1" variant="h5">
@@ -326,6 +341,10 @@ const CareTakerProfile = ({
             />
           ))
         )}
+      </Grid>
+
+      <Grid container className={classes.spacer}>
+        <CareTakerReview reviews={reviews}></CareTakerReview>
       </Grid>
     </div>
   );
