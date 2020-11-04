@@ -178,16 +178,48 @@ const SummaryInfo = () => {
     totalNumOfUniquePetsTakenCareOf: []
   });
 
-  const pcsInfo = [
-    {
-      text: 'Number of Pets this month',
-      data: 12
-    },
-    {
-      text: 'Month with highest no. of jobs',
-      data: moment().format('mmmm')
+  const adminInfoMapping = {
+    careTakerSalaries: 'Salary to be paid this month',
+    monthWithHighestNumOfJobs:
+      'Month with highest number of accepted bids this year',
+    totalNumOfUniquePetsTakenCareOf:
+      'Number of unique pets taken care of this month'
+  };
+
+  const processCareTakerSalaries = () => {
+    let obj = { text: adminInfoMapping.careTakerSalaries, data: 0 };
+    if (adminSummaryInfo.careTakerSalaries[0]) {
+      obj.data = adminSummaryInfo.careTakerSalaries[0].total;
     }
-  ];
+    return obj;
+  };
+
+  const processMonthWithHighestNumOfJobs = () => {
+    let obj = { text: adminInfoMapping.monthWithHighestNumOfJobs, data: 0 };
+    if (adminSummaryInfo.monthWithHighestNumOfJobs[0]) {
+      obj.data = adminSummaryInfo.monthWithHighestNumOfJobs[0].total;
+    }
+    return obj;
+  };
+
+  const processTotalNumOfUniquePetsTakenCareOf = () => {
+    let obj = {
+      text: adminInfoMapping.totalNumOfUniquePetsTakenCareOf,
+      data: 0
+    };
+    if (adminSummaryInfo.totalNumOfUniquePetsTakenCareOf[0]) {
+      obj.data = adminSummaryInfo.totalNumOfUniquePetsTakenCareOf[0].count;
+    }
+    return obj;
+  };
+
+  const processAdminInfo = () => {
+    return [
+      processCareTakerSalaries(),
+      processMonthWithHighestNumOfJobs(),
+      processTotalNumOfUniquePetsTakenCareOf()
+    ];
+  };
 
   const [greeting, setGreeting] = React.useState('');
 
@@ -219,7 +251,7 @@ const SummaryInfo = () => {
               <InfoCard key={i} {...item} />
             ))
           : role === ADMINISTRATOR
-          ? pcsInfo.map((item, i) => <InfoCard key={i} {...item} />)
+          ? processAdminInfo().map((item, i) => <InfoCard key={i} {...item} />)
           : null}
       </Grid>
     </Grid>
