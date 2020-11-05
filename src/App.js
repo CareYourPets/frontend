@@ -1,7 +1,7 @@
 import React from 'react';
-import App from 'app';
 import AppProvider from 'contexts';
 import { ToastContainer } from 'react-toastify';
+import App from 'app';
 
 const AppRender = () => {
   return (
