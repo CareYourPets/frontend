@@ -21,6 +21,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import RestoreIcon from '@material-ui/icons/Restore';
 import SearchIcon from '@material-ui/icons/Search';
 import PetsIcon from '@material-ui/icons/Pets';
+import SummaryInfo from './SummaryInformation';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -134,6 +135,7 @@ const Dashboard = () => {
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <div className={classes.paper}>
+          <SummaryInfo />
           <Grid container className={classes.spacer}>
             {role === PET_OWNER
               ? PetOwnerDrawerItems.map((item, i) => (
