@@ -9,10 +9,13 @@ import {
 } from 'utils/work.service';
 import { toast } from 'react-toastify';
 import { CARE_TAKER_PART_TIMER, CARE_TAKER_FULL_TIMER } from 'utils/roleUtil';
+import { Typography } from '@material-ui/core';
 
 function shiftDate(date, numDays) {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() + numDays);
+  // const newDate = new Date(date);
+  // console.log(newDate);
+  // newDate.setDate(newDate.getDate() + numDays);
+  var newDate = moment(date).add(numDays, 'days');
   return newDate;
 }
 
@@ -21,7 +24,14 @@ function getRange(count) {
 }
 
 const FullTimeWorkingDates = ({ type }) => {
-  const today = new Date();
+  // const today = new Date();
+  const startOfYear = moment()
+    .startOf('year')
+    .subtract(1, 'day')
+    .toDate();
+  const endOfYear = moment()
+    .endOf('year')
+    .toDate();
   const [heatmap, setHeatMap] = React.useState({});
 
   const fetchDates = async () => {
@@ -33,7 +43,7 @@ const FullTimeWorkingDates = ({ type }) => {
     }, {});
 
     const dates = getRange(366).map(index => {
-      const date = shiftDate(today, index);
+      const date = shiftDate(startOfYear, index);
       const formatedDate = moment(date).format('"YYYY/MM/DD"');
       return {
         date,
@@ -84,8 +94,8 @@ const FullTimeWorkingDates = ({ type }) => {
   return (
     <div>
       <CalendarHeatmap
-        startDate={today}
-        endDate={shiftDate(today, 365)}
+        startDate={startOfYear}
+        endDate={endOfYear}
         values={values}
         classForValue={value => {
           if (!value) {
@@ -115,7 +125,9 @@ const FullTimeWorkingDates = ({ type }) => {
 };
 
 const PartTimeWorkingDates = ({ type }) => {
-  const today = new Date();
+  const startOfYear = moment()
+    .startOf('year')
+    .toISOString(true);
   const [heatmap, setHeatMap] = React.useState({});
 
   const fetchDates = async () => {
@@ -126,8 +138,8 @@ const PartTimeWorkingDates = ({ type }) => {
       return { ...prev, [formatedDate]: 0 };
     }, {});
 
-    const dates = getRange(366).map(index => {
-      const date = shiftDate(today, index);
+    const dates = getRange(731).map(index => {
+      const date = shiftDate(startOfYear, index);
       const formatedDate = moment(date).format('"YYYY/MM/DD"');
       return {
         date,
@@ -177,9 +189,14 @@ const PartTimeWorkingDates = ({ type }) => {
 
   return (
     <div>
+      <Typography>
+        Note: You can only indicate your availability between{' '}
+        {moment().format('YYYY/MM/DD')} and{' '}
+        {moment(shiftDate(startOfYear, 730)).format('YYYY/MM/DD')}
+      </Typography>
       <CalendarHeatmap
-        startDate={today}
-        endDate={shiftDate(today, 365)}
+        startDate={shiftDate(startOfYear, -1)}
+        endDate={shiftDate(startOfYear, 730)}
         values={values}
         classForValue={value => {
           if (!value) {
