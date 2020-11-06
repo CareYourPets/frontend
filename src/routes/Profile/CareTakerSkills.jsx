@@ -10,15 +10,12 @@ import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import {
   fetchCareTakerSkills,
-  updateCareTakerSkills,
   fetchPetCategories,
   createPetCategories,
   deletePetCategories
 } from 'utils/profile.service';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
 import Modal from '@material-ui/core/Modal';
 
 const useStyles = makeStyles(theme => ({
@@ -75,20 +72,6 @@ const CareTakerSkill = () => {
         return { ...prev, [skill.category]: { ...skill, isEdit } };
       }, {});
       setSkills(reducedData);
-    } catch {
-      setSkills(skills);
-    }
-  };
-
-  const editPrice = skill => {
-    setSkills({ ...skills, [skill]: { ...skills[skill], isEdit: true } });
-  };
-
-  const savePrice = async skill => {
-    try {
-      await updateCareTakerSkills(skills[skill]);
-      setSkills({ ...skills, [skill]: { ...skills[skill], isEdit: false } });
-      await fetchSkills();
     } catch {
       setSkills(skills);
     }
@@ -261,33 +244,16 @@ const CareTakerSkill = () => {
             )}
           </Grid>
           <Grid item xs={2}>
-            {skills[skill].isEdit === true ? (
+            <Grid container justify="flex-end">
               <Button
                 type="button"
                 variant="contained"
-                color="primary"
-                onClick={() => savePrice(skill)}
+                color="default"
+                onClick={() => deleteCategory(skill)}
               >
-                <SaveIcon />
+                <DeleteIcon />
               </Button>
-            ) : (
-              <Button
-                type="button"
-                variant="contained"
-                color="secondary"
-                onClick={() => editPrice(skill)}
-              >
-                <EditIcon />
-              </Button>
-            )}
-            <Button
-              type="button"
-              variant="contained"
-              color="default"
-              onClick={() => deleteCategory(skill)}
-            >
-              <DeleteIcon />
-            </Button>
+            </Grid>
           </Grid>
         </Grid>
       ))}
