@@ -9,10 +9,13 @@ import {
 } from 'utils/work.service';
 import { toast } from 'react-toastify';
 import { CARE_TAKER_PART_TIMER, CARE_TAKER_FULL_TIMER } from 'utils/roleUtil';
+import { Typography } from '@material-ui/core';
 
 function shiftDate(date, numDays) {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() + numDays);
+  // const newDate = new Date(date);
+  // console.log(newDate);
+  // newDate.setDate(newDate.getDate() + numDays);
+  var newDate = moment(date).add(numDays, 'days');
   return newDate;
 }
 
@@ -124,8 +127,7 @@ const FullTimeWorkingDates = ({ type }) => {
 const PartTimeWorkingDates = ({ type }) => {
   const startOfYear = moment()
     .startOf('year')
-    .subtract(1, 'day')
-    .toDate();
+    .toISOString(true);
   const [heatmap, setHeatMap] = React.useState({});
 
   const fetchDates = async () => {
@@ -187,8 +189,13 @@ const PartTimeWorkingDates = ({ type }) => {
 
   return (
     <div>
+      <Typography>
+        Note: You can only indicate your availability between{' '}
+        {moment().format('YYYY/MM/DD')} and{' '}
+        {moment(shiftDate(startOfYear, 730)).format('YYYY/MM/DD')}
+      </Typography>
       <CalendarHeatmap
-        startDate={startOfYear}
+        startDate={shiftDate(startOfYear, -1)}
         endDate={shiftDate(startOfYear, 730)}
         values={values}
         classForValue={value => {
