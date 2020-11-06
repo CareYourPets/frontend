@@ -64,7 +64,13 @@ const SignIn = () => {
     handleUser({ ...user, isFetching: true });
     try {
       await createUser(values.email, values.password, values.role);
-      handleUser({ ...user, isAuth: true, isFetching: false });
+      handleUser({
+        ...user,
+        email: values.email,
+        role: values.role,
+        isAuth: true,
+        isFetching: false
+      });
     } catch {
       handleUser({ ...user, isAuth: false, isFetching: false });
     }
