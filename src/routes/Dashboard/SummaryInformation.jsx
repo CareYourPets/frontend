@@ -197,7 +197,10 @@ const SummaryInfo = () => {
   const processMonthWithHighestNumOfJobs = () => {
     let obj = { text: adminInfoMapping.monthWithHighestNumOfJobs, data: 0 };
     if (adminSummaryInfo.monthWithHighestNumOfJobs[0]) {
-      obj.data = adminSummaryInfo.monthWithHighestNumOfJobs[0].total;
+      obj.data =
+        adminSummaryInfo.monthWithHighestNumOfJobs[0].time +
+        ' | Total bids: ' +
+        adminSummaryInfo.monthWithHighestNumOfJobs[0].total;
     }
     return obj;
   };
