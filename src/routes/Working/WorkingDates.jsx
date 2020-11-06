@@ -21,7 +21,14 @@ function getRange(count) {
 }
 
 const FullTimeWorkingDates = ({ type }) => {
-  const today = new Date();
+  // const today = new Date();
+  const startOfYear = moment()
+    .startOf('year')
+    .subtract(1, 'day')
+    .toDate();
+  const endOfYear = moment()
+    .endOf('year')
+    .toDate();
   const [heatmap, setHeatMap] = React.useState({});
 
   const fetchDates = async () => {
@@ -33,7 +40,7 @@ const FullTimeWorkingDates = ({ type }) => {
     }, {});
 
     const dates = getRange(366).map(index => {
-      const date = shiftDate(today, index);
+      const date = shiftDate(startOfYear, index);
       const formatedDate = moment(date).format('"YYYY/MM/DD"');
       return {
         date,
@@ -84,8 +91,8 @@ const FullTimeWorkingDates = ({ type }) => {
   return (
     <div>
       <CalendarHeatmap
-        startDate={today}
-        endDate={shiftDate(today, 365)}
+        startDate={startOfYear}
+        endDate={endOfYear}
         values={values}
         classForValue={value => {
           if (!value) {
@@ -115,7 +122,10 @@ const FullTimeWorkingDates = ({ type }) => {
 };
 
 const PartTimeWorkingDates = ({ type }) => {
-  const today = new Date();
+  const startOfYear = moment()
+    .startOf('year')
+    .subtract(1, 'day')
+    .toDate();
   const [heatmap, setHeatMap] = React.useState({});
 
   const fetchDates = async () => {
@@ -126,8 +136,8 @@ const PartTimeWorkingDates = ({ type }) => {
       return { ...prev, [formatedDate]: 0 };
     }, {});
 
-    const dates = getRange(366).map(index => {
-      const date = shiftDate(today, index);
+    const dates = getRange(731).map(index => {
+      const date = shiftDate(startOfYear, index);
       const formatedDate = moment(date).format('"YYYY/MM/DD"');
       return {
         date,
@@ -178,8 +188,8 @@ const PartTimeWorkingDates = ({ type }) => {
   return (
     <div>
       <CalendarHeatmap
-        startDate={today}
-        endDate={shiftDate(today, 365)}
+        startDate={startOfYear}
+        endDate={shiftDate(startOfYear, 730)}
         values={values}
         classForValue={value => {
           if (!value) {
