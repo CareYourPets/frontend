@@ -153,7 +153,7 @@ const BidInfo = ({
       await updateBid({
         ...bidInfo,
         isAccepted: true,
-        transactionDate: moment(Date.now()).format(MOMENT_TIME_FORMAT)
+        transactionDate: moment().toISOString(true)
       });
       await fetchAllBids();
       setIsEdit(false);

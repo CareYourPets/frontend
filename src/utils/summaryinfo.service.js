@@ -4,7 +4,7 @@ import moment from 'moment';
 import { getAccessToken } from './auth.service';
 
 const CURR_MONTH_AND_YEAR = {
-  month: moment().month(),
+  month: moment().month() + 1,
   year: moment().year()
 };
 
@@ -56,7 +56,11 @@ export const fetchMonthWithHighestJobs = async () => {
 export const fetchTotalNumOfUniquePetsTakenCareOf = async () => {
   try {
     const accessToken = getAccessToken();
-    const data = await API.post('/pet/admin/month/fetchpet', {}, accessToken);
+    const data = await API.post(
+      '/pet/admin/month/fetchpet',
+      CURR_MONTH_AND_YEAR,
+      accessToken
+    );
     return data;
   } catch (error) {
     toast.error('Something Went Wrong');
