@@ -173,11 +173,7 @@ const BidInfo = ({
   const body = (
     <div style={modalStyle} className={classes.model}>
       <Typography component="h1" variant="h5">
-        {user.role === PET_OWNER
-          ? 'Care Taker Info'
-          : user.role === CARE_TAKER
-          ? 'Pet Owner Info'
-          : 'Unspecified'}
+        Care Taker Info
       </Typography>
       <Grid container className={classes.spacer}>
         <Grid item xs={3}>
