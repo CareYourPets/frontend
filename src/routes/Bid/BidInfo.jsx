@@ -382,7 +382,7 @@ const BidInfo = ({
                 </Typography>
               </Grid>
               <Grid item xs={9}>
-                {isEdit && !bidInfo.isAccepted ? (
+                {isEdit ? (
                   <FormControl
                     fullWidth
                     variant="outlined"
@@ -494,7 +494,7 @@ const BidInfo = ({
                 </Typography>
               </Grid>
               <Grid item xs={9}>
-                {isEdit && !bidInfo.isAccepted ? (
+                {isEdit ? (
                   <FormControl
                     variant="outlined"
                     className={classes.formControl}
