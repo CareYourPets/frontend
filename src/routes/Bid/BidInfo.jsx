@@ -173,7 +173,11 @@ const BidInfo = ({
   const body = (
     <div style={modalStyle} className={classes.model}>
       <Typography component="h1" variant="h5">
-        Care Taker Info
+        {user.role === PET_OWNER
+          ? 'CareTaker Info'
+          : user.role === CARE_TAKER
+          ? 'PetOwner Info'
+          : 'Unspecified'}
       </Typography>
       <Grid container className={classes.spacer}>
         <Grid item xs={3}>
@@ -183,70 +187,80 @@ const BidInfo = ({
         </Grid>
         <Grid item xs={9}>
           <Typography component="p" variant="h6">
-            {care_taker_email}
+            {user.role === PET_OWNER
+              ? care_taker_email
+              : user.role === CARE_TAKER
+              ? pet_owner_email
+              : 'Unspecified'}
           </Typography>
         </Grid>
       </Grid>
-      <Grid container className={classes.spacer}>
-        <Grid item xs={3}>
-          <Typography component="p" variant="h6">
-            Contact
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography component="p" variant="h6">
-            {contact}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container className={classes.spacer}>
-        <Grid item xs={3}>
-          <Typography component="p" variant="h6">
-            Area:
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography component="p" variant="h6">
-            {area}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container className={classes.spacer}>
-        <Grid item xs={3}>
-          <Typography component="p" variant="h6">
-            Location:
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography component="p" variant="h6">
-            {location}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container className={classes.spacer}>
-        <Grid item xs={3}>
-          <Typography component="p" variant="h6">
-            Gender:
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography component="p" variant="h6">
-            {gender}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container className={classes.spacer}>
-        <Grid item xs={3}>
-          <Typography component="p" variant="h6">
-            Bio:
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography component="p" variant="h6">
-            {bio}
-          </Typography>
-        </Grid>
-      </Grid>
+      {user.role === CARE_TAKER ? (
+        <div />
+      ) : (
+        <div>
+          <Grid container className={classes.spacer}>
+            <Grid item xs={3}>
+              <Typography component="p" variant="h6">
+                Contact
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography component="p" variant="h6">
+                {contact}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container className={classes.spacer}>
+            <Grid item xs={3}>
+              <Typography component="p" variant="h6">
+                Area:
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography component="p" variant="h6">
+                {area}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container className={classes.spacer}>
+            <Grid item xs={3}>
+              <Typography component="p" variant="h6">
+                Location:
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography component="p" variant="h6">
+                {location}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container className={classes.spacer}>
+            <Grid item xs={3}>
+              <Typography component="p" variant="h6">
+                Gender:
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography component="p" variant="h6">
+                {gender}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container className={classes.spacer}>
+            <Grid item xs={3}>
+              <Typography component="p" variant="h6">
+                Bio:
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography component="p" variant="h6">
+                {bio}
+              </Typography>
+            </Grid>
+          </Grid>
+        </div>
+      )}
     </div>
   );
 
@@ -282,7 +296,12 @@ const BidInfo = ({
             </Grid>
             <Grid item xs={6}>
               <Typography component="p" variant="h6">
-                CareTaker: {name}
+                {user.role === CARE_TAKER
+                  ? 'PetOwner:'
+                  : user.role === PET_OWNER
+                  ? 'CareTaker:'
+                  : 'Unspecified'}{' '}
+                {name}
               </Typography>
             </Grid>
             <Grid item xs={6}>
