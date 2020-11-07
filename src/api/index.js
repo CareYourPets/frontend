@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const httpUrl = 'https://careyourpets.herokuapp.com';
-// window.location.hostname === '127.0.0.1' ||
-// window.location.hostname === 'localhost'
-//   ? 'http://localhost:5000'
-//   : 'https://careyourpets.herokuapp.com';
+const httpUrl =
+  window.location.hostname === '127.0.0.1' ||
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : 'https://careyourpets.herokuapp.com';
 /** Commented below out because it causes Access control origin errors */
 // axios.defaults.withCredentials = true;
 
